@@ -1,0 +1,33 @@
+.joueurItem:hover {
+    -fx-border-color: gray;
+}
+
+.joueurItem{
+    -fx-border-color: rgba(240, 240, 240, 0.5);
+    -fx-background-color: rgba(240, 240, 240, 0.5);
+    -fx-font-size: 1.2em;
+}
+
+.femme{
+    -fx-border-color: rgba(255, 153, 204, 0.5);
+    -fx-background-color: rgba(255, 153, 204, 0.5);
+    -fx-font-size: 1.2em;
+}
+.femme:hover {
+    -fx-border-color: gray;
+}
+
+.homme{
+    -fx-border-color: rgba(102, 153, 255, 0.5);
+    -fx-background-color: rgba(102, 153, 255, 0.5);
+    -fx-font-size: 1.2em;
+}
+
+.homme:hover {
+    -fx-border-color: gray;
+}
+
+
+.joueurHeader{
+    -fx-font-weight: bold;
+}
