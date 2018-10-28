@@ -46,9 +46,9 @@ public class Tournoi implements Serializable {
     private Integer pointVictoire;
     private Integer pointDefaite;
     private Integer pointDefaitePlus;
-    public Tournoi() {
 
-    }
+    public Tournoi() {}
+
     public Tournoi(String nomTournoi, TypeTournoi type, Integer nombreTour, Integer nombreTerrain) {
         this.nomTournoi = nomTournoi;
         this.typeTournoi = type;
@@ -69,15 +69,15 @@ public class Tournoi implements Serializable {
     public void loadContraintes(){
         listContraintes = new ArrayList<>();
         listContraintes.add(new Contrainte("Attente joueur", "On évite que les joueurs reste sur la touche pendant plusieurs tours.",
-                true, Contrainte.CODE.JOUEUR_ATTENTE, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-attente.png"));
+                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-attente.png"));
         listContraintes.add(new Contrainte("Redondance équipier", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois avec le même équipier dans le cas d'un match en double.",
-                true, Contrainte.CODE.REDONDANCE_EQUIPIER, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-equipier.png"));
+                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-equipier.png"));
         listContraintes.add(new Contrainte("Redondance adversaire", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois contre le même adversaire.",
-                true, Contrainte.CODE.REDONDANCE_ADVERSAIRE, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-adversaire.png"));
+                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-adversaire.png"));
         listContraintes.add(new Contrainte("Equipe mixte", "On ne permet pas qu'une équipe mixte puisse jouer avec une équipe non mixte.",
-                true, Contrainte.CODE.EQUIPE_MIXTE, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-mixte.png"));
+                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-mixte.png"));
         listContraintes.add(new Contrainte("Ecart maxi", "On ne permet pas un écart de points de plus de X points entre les deux équipes.",
-                true, Contrainte.CODE.ECART_MAXI, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/scoreboard.png"));
+                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/scoreboard.png"));
     }
 
     public Contrainte getContrainte(String nomContrainte){
@@ -86,22 +86,6 @@ public class Tournoi implements Serializable {
                 return listContraintes.get(i);
         }
         return null;
-    }
-
-    public Contrainte.CODE getContrainteCode(String nom) {
-        switch(nom){
-            case "Redondance équipier":
-                return Contrainte.CODE.REDONDANCE_EQUIPIER;
-            case "Redondance adversaire":
-                return Contrainte.CODE.REDONDANCE_ADVERSAIRE;
-            case "Equipe mixte":
-                return Contrainte.CODE.EQUIPE_MIXTE;
-            case "Ecart maxi":
-                return Contrainte.CODE.ECART_MAXI;
-            case "Attente joueur":
-                return Contrainte.CODE.JOUEUR_ATTENTE;
-            default:return null;
-        }
     }
 
     public Integer getCurrentTour() {
@@ -489,17 +473,17 @@ public class Tournoi implements Serializable {
 
     //doit retourner false pour ne pas avoir d'alerte
     private boolean verifieContrainte(Match match, Joueur joueurAlea, Contrainte contrainte, Match.Equipe equipe) {
-        switch(contrainte.getCode()){
-            case REDONDANCE_ADVERSAIRE:
+        switch(contrainte.getNom()){
+            case "Redondance adversaire":
                 return match.redondanceAdversaire(joueurAlea, equipe);
-            case REDONDANCE_EQUIPIER:
+            case "Redondance équipier":
                 return match.redondanceEquipier(joueurAlea, equipe);
-            case EQUIPE_MIXTE:
+            case "Equipe mixte":
                 return match.equipeMixte(joueurAlea);
-            case ECART_MAXI:
+            case "Ecart maxi":
                 //TODO
                 return false;
-            case JOUEUR_ATTENTE:
+            case "Attente joueur":
                 return !listJoueursAttente.contains(joueurAlea);
             default:
                 System.out.println("Contrainte inconnu");

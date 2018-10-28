@@ -400,4 +400,11 @@ public class Controler {
     public void arreterTournoi() {
         currentTournoi = null;
     }
+
+    public boolean tournoiEnCours() {
+        if (getCurrentTournoi() != null)
+            return getCurrentTournoi().getCurrentTour() != null;
+        else
+            return false;
+    }
 }

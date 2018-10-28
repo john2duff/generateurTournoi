@@ -47,7 +47,6 @@ public class ConfigToolBar extends ToolBar {
         });
         refreshModeEdition();
 
-
         genererTournoi.setAlignment(Pos.CENTER_RIGHT);
 
         getItems().addAll(modeEdition, genererTournoi, arreterTournoi);
@@ -55,20 +54,22 @@ public class ConfigToolBar extends ToolBar {
     }
 
     public void refreshModeEdition(){
-        if (modeEdition.isSelected()){
-            modeEdition.setText("Valider les modifications");
-            genererTournoi.setVisible(false);
+        if (!ctrl.tournoiEnCours()){
+            modeEdition.setDisable(false);
+            genererTournoi.setDisable(false);
             arreterTournoi.setVisible(false);
-        }else{
-            modeEdition.setText("Modifier");
-            genererTournoi.setVisible(true);
-            if (ctrl.getCurrentTournoi() != null && ctrl.getCurrentTournoi().getCurrentTour() == null){
-                genererTournoi.setDisable(false);
-                arreterTournoi.setDisable(true);
+            if (modeEdition.isSelected()){
+                modeEdition.setText("Valider les modifications");
+                genererTournoi.setVisible(false);
             }else{
-                genererTournoi.setDisable(true);
-                arreterTournoi.setDisable(false);
+                modeEdition.setText("Modifier");
+                genererTournoi.setVisible(true);
             }
+        }else{
+            modeEdition.setDisable(true);
+            genererTournoi.setVisible(false);
+            arreterTournoi.setVisible(true);
+
         }
     }
 

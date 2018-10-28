@@ -64,16 +64,24 @@ public class JoueurToolbar extends ToolBar {
     }
 
     public void refreshModeEdition(){
-        if (modeEdition.isSelected()){
-            modeEdition.setText("Valider les modifications");
-            abort.setVisible(true);
-            supprimerTout.setVisible(true);
-            ajouterJoueur.setVisible(true);
+        if (!ctrl.tournoiEnCours()){
+            modeEdition.setDisable(false);
+            if (modeEdition.isSelected()){
+                modeEdition.setText("Valider les modifications");
+                abort.setVisible(true);
+                supprimerTout.setVisible(true);
+                ajouterJoueur.setVisible(true);
+            }else{
+                modeEdition.setText("Modifier");
+                abort.setVisible(false);
+                supprimerTout.setVisible(false);
+                ajouterJoueur.setVisible(false);
+            }
         }else{
-            modeEdition.setText("Modifier");
+            modeEdition.setDisable(true);
             abort.setVisible(false);
             supprimerTout.setVisible(false);
-            ajouterJoueur.setVisible(false);
+            supprimerTout.setVisible(false);
         }
     }
 

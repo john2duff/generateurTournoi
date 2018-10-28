@@ -311,7 +311,7 @@ public class ConfigView extends BorderPane {
             photo.setFitHeight(30.0);
             photo.setFitWidth(30.0);
             photo.setStyle("-fx-padding: 10;");
-            if (tournoi.getContrainte(lNomRegle.getText()).getCode() == Contrainte.CODE.ECART_MAXI){
+            if (tournoi.getContrainte(lNomRegle.getText()).getNom().equals("Ecart maxi")){
                 ecartMaxiSpinner = new Spinner<>(minEcartMaxi, maxEcartMaxi, tournoi.getEcartMaxi());
                 ecartMaxiSpinner.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_RIGHT_HORIZONTAL);
                 ecartMaxiSpinner.setStyle("-fx-pref-width: 80; -fx-min-width: 80;");
@@ -343,12 +343,12 @@ public class ConfigView extends BorderPane {
                 });
 
                 hboxRegle.setSpacing(5);
-                if (tournoi.getContrainte(lNomRegle.getText()).getCode() == Contrainte.CODE.ECART_MAXI){
+                if (tournoi.getContrainte(lNomRegle.getText()).getNom().equals("Ecart maxi")){
                     lNomRegle.setStyle("-fx-min-width: 115;");
                     lDescriptionRegle.setText(tournoi.getListContraintes().get(i).getDescription());
-                    hboxRegle.getChildren().addAll(actif, photo, lOrdreRegle, monter, descendre, lNomRegle, ecartMaxiSpinner,  lDescriptionRegle);
+                    hboxRegle.getChildren().addAll(actif, lOrdreRegle, photo,  monter, descendre, lNomRegle, ecartMaxiSpinner,  lDescriptionRegle);
                 }else{
-                    hboxRegle.getChildren().addAll(actif, photo, lOrdreRegle, monter, descendre, lNomRegle, lDescriptionRegle);
+                    hboxRegle.getChildren().addAll(actif, lOrdreRegle, photo, monter, descendre, lNomRegle, lDescriptionRegle);
                 }
             }
             if (tournoi.getListContraintes().get(i).isActif() || configToolBar.getModeEdition())
@@ -383,16 +383,16 @@ public class ConfigView extends BorderPane {
         for (int i = 0; i < vboxRegle.getChildren().size(); i++){
             HBox h = (HBox)vboxRegle.getChildren().get(i);
             boolean actif = (boolean)((CheckBox)h.getChildren().get(0)).isSelected();
-            String nom = (String)((Label)h.getChildren().get(4)).getText();
+            String nom = (String)((Label)h.getChildren().get(5)).getText();
             String description = "";
-            if (tournoi.getContrainte(nom).getCode() == Contrainte.CODE.ECART_MAXI){
+            if (nom.equals("Ecart maxi")){
                 tournoi.setEcartMaxi(ecartMaxiSpinner.getValue());
-                description = (String)((Label)h.getChildren().get(6)).getText();
+                description = (String)((Label)h.getChildren().get(7)).getText();
             }else{
-                description = (String)((Label)h.getChildren().get(5)).getText();
+                description = (String)((Label)h.getChildren().get(6)).getText();
             }
-
-            listContraintes.add(tournoi.getContrainte(nom));
+            Contrainte c = new Contrainte(nom, description, actif, ctrl.getCurrentTournoi().getContrainte(nom).getTypeTournoi(), ctrl.getCurrentTournoi().getContrainte(nom).getUrlPhoto());
+            listContraintes.add(c);
         }
         tournoi.setListContraintes(listContraintes);
 
