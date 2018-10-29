@@ -99,7 +99,7 @@ public class JoueurCellFactory extends HBox {
         setStyleJoueur(j);
         prenom.setText(j.getPrenom());
         nom.setText(j.getNom());
-        getChildren().addAll(prenomEdition, nomEdition);
+        getChildren().addAll(prenom, nom);
     }
 
     public void setStyleJoueur(Joueur j){

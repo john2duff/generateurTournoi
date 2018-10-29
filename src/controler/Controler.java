@@ -431,4 +431,12 @@ public class Controler {
             return false;
         }
     }
+
+    public Integer getCurrentTour() {
+        if (getCurrentTournoi() != null){
+            return getCurrentTournoi().getCurrentTour();
+        }else{
+            return null;
+        }
+    }
 }

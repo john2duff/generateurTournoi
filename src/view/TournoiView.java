@@ -34,9 +34,4 @@ public class TournoiView extends BorderPane {
         tournoiToolbar.refresh();
     }
 
-
-
-
-
-
 }

@@ -34,11 +34,9 @@ public class MainToolbar extends ToolBar {
         });
 
         enregistrementAuto = new CheckBox ("Enregistrement automatique");
-        enregistrementAuto.setSelected(true);
         enregistrementAuto.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 ctrl.saveAuto(enregistrementAuto.isSelected());
-                refresh();
             }
         });
 

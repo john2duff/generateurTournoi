@@ -1,6 +1,9 @@
 package view;
 
 import controler.Controler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.RotateEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Joueur;
@@ -39,10 +43,25 @@ public class MatchView extends TitledPane {
         VBox hJoueurEquipeA = createVueEquipe(match.getEquipeA(), false);
         VBox hJoueurEquipeB = createVueEquipe(match.getEquipeB(), true);
 
-        scoreEquipeA = createScore(match.getScoreEquipeA(), tour.getNumeroTour());
-        scoreEquipeA.valueProperty().addListener((obs, oldValue, newValue) ->
-                ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue));
-        scoreEquipeB = createScore(match.getScoreEquipeA(), tour.getNumeroTour());
+
+        scoreEquipeA = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), match.getNumeroMatch());
+        scoreEquipeA.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
+                ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue);
+                coloriseMatch();
+            }
+        });
+        scoreEquipeB = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), match.getNumeroMatch());
+        scoreEquipeB.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
+                ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue);
+                coloriseMatch();
+            }
+        });
+
+        coloriseMatch();
 
         ImageView volant = ctrl.chargeImageView("/img/main.png");
         volant.setFitHeight(30.0);
@@ -52,6 +71,18 @@ public class MatchView extends TitledPane {
         setContent(vMatch);
     }
 
+    private void coloriseMatch() {
+        if((scoreEquipeA.getValue() >= 21 || scoreEquipeB.getValue() >= 21) && Math.abs(scoreEquipeA.getValue() - scoreEquipeB.getValue()) >= 2){
+            if (scoreEquipeA.getValue() > scoreEquipeB.getValue()){
+                scoreEquipeA.setStyle("-fx-background-color: green;");
+                scoreEquipeB.setStyle("-fx-background-color: red;");
+            }else{
+                scoreEquipeA.setStyle("-fx-background-color: red;");
+                scoreEquipeB.setStyle("-fx-background-color: green;");
+            }
+        }
+    }
+
     public VBox createVueEquipe(ArrayList<Joueur> equipe, boolean droite){
         VBox vboxEquipe = new VBox();
         vboxEquipe.setSpacing(5);
@@ -59,7 +90,7 @@ public class MatchView extends TitledPane {
             HBox hEquipe = new HBox();
             Joueur joueur = equipe.get(k);
             hEquipe.setAlignment(Pos.CENTER_LEFT);
-            hEquipe.setSpacing(5);
+            hEquipe.setSpacing(10);
             ImageView photo = ctrl.chargePhoto(joueur);
             VBox vNomPrenom = new VBox();
             Label prenom = new Label(joueur.getPrenom());
@@ -82,10 +113,10 @@ public class MatchView extends TitledPane {
         return vboxEquipe;
     }
 
-    public Spinner<Integer> createScore(Integer scoreEquipe, Integer indexTour){
+    public Spinner<Integer> createScore(Integer scoreEquipe, Integer indexTour, Integer indexMatch){
         Spinner<Integer> scoreEquipeSpinner = new Spinner<>(minScore, maxScore, scoreEquipe);
         scoreEquipeSpinner.setStyle("-fx-max-width: 60; -fx-min-width: 60;");
-        scoreEquipeSpinner.setDisable(!indexTour.equals(tour.getNumeroTour()));
+        scoreEquipeSpinner.setDisable(!indexTour.equals(ctrl.getCurrentTour()));
         scoreEquipeSpinner.setEditable(true);
         return scoreEquipeSpinner;
     }

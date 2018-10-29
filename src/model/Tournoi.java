@@ -317,10 +317,11 @@ public class Tournoi implements Serializable {
     }
 
     public boolean  ajouteJoueur(Joueur j){
-        listJoueurs.add(j);
         if (!listJoueurs.contains(j)){
+            listJoueurs.add(j);
             return true;
         }
+        listJoueurs.add(j);
         return false;
     }
 
