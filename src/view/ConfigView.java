@@ -134,6 +134,7 @@ public class ConfigView extends BorderPane {
         refreshContext(tournoi);
         refreshAttributionPoint(tournoi);
         refreshRegle(tournoi);
+        configToolBar.refresh();
     }
 
     public void refreshContext(Tournoi tournoi){

@@ -39,7 +39,7 @@ public class TournoiToolBar extends ToolBar {
         getItems().addAll(clotureTour, distribuerJoueur);
     }
 
-    public void refreshTourToolBar(){
+    public void refresh(){
         Integer currentTour = ctrl.getCurrentTournoi().getCurrentTour();
         if (currentTour != null){
             clotureTour.setText("Cloturer le tour " + (currentTour+1));

@@ -46,7 +46,11 @@ public class JoueurCellFactory extends HBox {
             prenom.setText(j.getPrenom());
             nom.setText(j.getNom());
             niveau.setText(j.getNiveau().getNomNiveau());
-            getChildren().setAll(actif, photo, prenom, nom, niveau);
+            if (!ctrl.tournoiEnCours()){
+                getChildren().setAll(actif, photo, prenom, nom, niveau);
+            }else{
+                getChildren().setAll(photo, prenom, nom, niveau);
+            }
             setId(index.toString());
             setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent me) {

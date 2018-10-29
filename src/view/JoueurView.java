@@ -38,17 +38,14 @@ public class JoueurView extends BorderPane {
         setCenter(container);
     }
 
-    public void refreshListJoueur(ArrayList<Joueur> listJoueurs) {
+    public void refreshJoueurView(ArrayList<Joueur> listJoueurs) {
         vboxJoueur.getChildren().clear();
         //ajout joueurs
         for (int i = 0; i < listJoueurs.size(); i++){
             JoueurCellFactory jLigne = new JoueurCellFactory(joueurToolbar.getModeEdition(), listJoueurs.get(i), ctrl, i);
             vboxJoueur.getChildren().add(jLigne);
         }
-    }
-
-    public void enregistreListeJoueurs() {
-
+        joueurToolbar.refresh();
     }
 
     public ArrayList<Joueur> getListJoueurs() {
@@ -66,6 +63,10 @@ public class JoueurView extends BorderPane {
             joueurs.add(new Joueur(prenom, nom, niveau, sexe, actif));
         }
         return joueurs;
+    }
+
+    public boolean isModeEdition(){
+        return joueurToolbar.isModeEdition();
     }
 
 }

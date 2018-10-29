@@ -1,17 +1,9 @@
 package view;
 
 import controler.Controler;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import javax.tools.Tool;
-import java.io.InputStream;
 
 
 public class MainToolbar extends ToolBar {
@@ -46,7 +38,7 @@ public class MainToolbar extends ToolBar {
         enregistrementAuto.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 ctrl.saveAuto(enregistrementAuto.isSelected());
-                refreshEnregistrement();
+                refresh();
             }
         });
 
@@ -68,7 +60,7 @@ public class MainToolbar extends ToolBar {
 
     }
 
-    private void refreshEnregistrement() {
+    public void refresh() {
         if (enregistrementAuto.isSelected()){
             enregistrer.setDisable(true);
         }else{

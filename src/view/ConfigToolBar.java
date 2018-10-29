@@ -33,7 +33,6 @@ public class ConfigToolBar extends ToolBar {
             @Override
             public void handle(ActionEvent event) {
                 ctrl.arreterTournoi();
-                refreshModeEdition();
             }
         });
 
@@ -42,10 +41,9 @@ public class ConfigToolBar extends ToolBar {
             @Override
             public void handle(ActionEvent event) {
                 ctrl.modeEditionConfigChange(getModeEdition());
-                refreshModeEdition();
             }
         });
-        refreshModeEdition();
+        refresh();
 
         genererTournoi.setAlignment(Pos.CENTER_RIGHT);
 
@@ -53,23 +51,23 @@ public class ConfigToolBar extends ToolBar {
 
     }
 
-    public void refreshModeEdition(){
+    public void refresh(){
         if (!ctrl.tournoiEnCours()){
             modeEdition.setDisable(false);
-            genererTournoi.setDisable(false);
+            genererTournoi.setDisable(!ctrl.getNbreJoueurSuffisant());
             arreterTournoi.setVisible(false);
+            if(modeEdition.isSelected() || ctrl.isJoueurModeEdition()){
+                genererTournoi.setDisable(true);
+            }
             if (modeEdition.isSelected()){
                 modeEdition.setText("Valider les modifications");
-                genererTournoi.setVisible(false);
             }else{
                 modeEdition.setText("Modifier");
-                genererTournoi.setVisible(true);
             }
         }else{
             modeEdition.setDisable(true);
-            genererTournoi.setVisible(false);
+            genererTournoi.setDisable(true);
             arreterTournoi.setVisible(true);
-
         }
     }
 

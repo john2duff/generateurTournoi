@@ -26,7 +26,6 @@ public class JoueurToolbar extends ToolBar {
             @Override
             public void handle(ActionEvent event) {
                 modeEdition.setSelected(false);
-                refreshModeEdition();
                 ctrl.abortJoueurChange();
             }
         });
@@ -54,16 +53,16 @@ public class JoueurToolbar extends ToolBar {
             @Override
             public void handle(ActionEvent event) {
                 ctrl.modeEditionJoueurChange(getModeEdition());
-                refreshModeEdition();
             }
         });
-        refreshModeEdition();
+
+        refresh();
 
         getItems().addAll(modeEdition, ajouterJoueur, supprimerTout);
 
     }
 
-    public void refreshModeEdition(){
+    public void refresh(){
         if (!ctrl.tournoiEnCours()){
             modeEdition.setDisable(false);
             if (modeEdition.isSelected()){
@@ -86,6 +85,10 @@ public class JoueurToolbar extends ToolBar {
     }
 
     public boolean getModeEdition() {
+        return modeEdition.isSelected();
+    }
+
+    public boolean isModeEdition(){
         return modeEdition.isSelected();
     }
 }

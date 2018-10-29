@@ -218,21 +218,24 @@ public class Controler {
         vueGeneral.getStatusBar().updateInfo(txt);
     }
 
-    public ArrayList<Joueur> getListJoueurs() {
-        return currentTournoi.getListJoueurs();
+    public ArrayList<Joueur> getListJoueurs () {
+        if (currentTournoi != null)
+            return currentTournoi.getListJoueurs();
+        else return null;
     }
 
     public void modeEditionJoueurChange(boolean modeEdition) {
         if (!modeEdition)
             currentTournoi.enregistreListJoueur(vueGeneral.getListJoueurs());
         vueGeneral.refreshJoueurView();
+        vueGeneral.refreshConfigView();
         saveAutomatique();
     }
 
     public void modeEditionConfigChange(boolean modeEdition) {
         if (!modeEdition)
             currentTournoi.enregistreConfig(vueGeneral.getTournoiConfig());
-        vueGeneral.refreshConfigView();
+        vueGeneral.refreshTournoi();
         saveAutomatique();
     }
 
@@ -350,14 +353,14 @@ public class Controler {
     }
 
     public void genererTournoi() {
-        currentTournoi.setCurrentTour();
+        currentTournoi.setCurrentTour(null);
         if (currentTournoi.generer()){
             updateInfo("Tournoi généré");
+            vueGeneral.refreshTournoi();
+            vueGeneral.selectTabTournoi();
         }else{
             updateInfo("Nombre de joueurs insuffisant pour générer un tournoi !");
         }
-        vueGeneral.refreshTournoi();
-        vueGeneral.selectTabTournoi();
     }
 
     public String getTailleTexte() {
@@ -375,9 +378,13 @@ public class Controler {
     }
 
     public void selectionJoueur(String id, boolean actif) {
-        Integer ind = Integer.valueOf(id);
-        currentTournoi.enregistreSelection(ind, actif);
-        vueGeneral.refreshTournoi();
+        if (!tournoiEnCours()){
+            Integer ind = Integer.valueOf(id);
+            currentTournoi.enregistreSelection(ind, actif);
+            vueGeneral.refreshTournoi();
+        }else{
+            updateInfo("Un tournoi est en cours, veuillez arrêter le tournoi avant de sélectionner des joueurs !");
+        }
     }
 
     public boolean tourIsCloture(Tour tour) {
@@ -398,7 +405,8 @@ public class Controler {
     }
 
     public void arreterTournoi() {
-        currentTournoi = null;
+        currentTournoi.setCurrentTour(null);
+        vueGeneral.refreshTournoi();
     }
 
     public boolean tournoiEnCours() {
@@ -406,5 +414,21 @@ public class Controler {
             return getCurrentTournoi().getCurrentTour() != null;
         else
             return false;
+    }
+
+    public boolean getNbreJoueurSuffisant() {
+        if (currentTournoi != null){
+            return currentTournoi.getNbreJoueurSuffisant();
+        }else{
+            return false;
+        }
+    }
+
+    public boolean isJoueurModeEdition() {
+        if(vueGeneral != null){
+            return vueGeneral.getVueJoueur().isModeEdition();
+        }else{
+            return false;
+        }
     }
 }

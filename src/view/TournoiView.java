@@ -1,17 +1,9 @@
 package view;
 
 import controler.Controler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import model.Joueur;
 import model.Tournoi;
-
-import java.util.ArrayList;
 
 public class TournoiView extends BorderPane {
 
@@ -32,11 +24,6 @@ public class TournoiView extends BorderPane {
         setCenter(tab);
     }
 
-    public void refreshTourToolBar(){
-        tournoiToolbar.refreshTourToolBar();
-
-    }
-
     public void refreshTournoi() {
         this.currentTournoi = ctrl.getCurrentTournoi();
         tab.getTabs().clear();
@@ -44,6 +31,7 @@ public class TournoiView extends BorderPane {
             TourView tabTour = new TourView(ctrl, currentTournoi.getListTours().get(i));
             tab.getTabs().add(tabTour);
         }
+        tournoiToolbar.refresh();
     }
 
 

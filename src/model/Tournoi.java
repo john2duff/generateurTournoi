@@ -92,8 +92,8 @@ public class Tournoi implements Serializable {
         return currentTour;
     }
 
-    public void setCurrentTour() {
-        currentTour = null;
+    public void setCurrentTour(Integer tour) {
+        currentTour = tour;
     }
 
     public void enregistreSelection(Integer ind, boolean actif) {
@@ -416,7 +416,7 @@ public class Tournoi implements Serializable {
         return (typeTournoi == TypeTournoi.SIMPLE) ? sac.size() >= 2 : sac.size() >= 4;
     }
 
-    private boolean getNbreJoueurSuffisant() {
+    public boolean getNbreJoueurSuffisant() {
         return (typeTournoi == TypeTournoi.SIMPLE) ? getNbreJoueurSelection() >= 2 : getNbreJoueurSelection() >= 4;
     }
 

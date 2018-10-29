@@ -5,7 +5,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import model.Joueur;
-import model.Niveau;
 import model.Tournoi;
 
 import java.util.ArrayList;
@@ -59,12 +58,12 @@ public class GeneralView extends BorderPane {
         setBottom(statusBar);
     }
 
-    public StatusBar getStatusBar() {
-        return statusBar;
+    public JoueurView getVueJoueur() {
+        return vueJoueur;
     }
 
-    public boolean getModeEdition() {
-        return false;
+    public StatusBar getStatusBar() {
+        return statusBar;
     }
 
     public void ouvreTournoi(){
@@ -75,11 +74,15 @@ public class GeneralView extends BorderPane {
         refreshJoueurView();
         refreshConfigView();
         refreshTournoiView();
+        refreshMainToolbar();
+    }
+
+    public void refreshMainToolbar(){
+        toolBarPrincipal.refresh();
     }
 
     public void refreshJoueurView() {
-        vueJoueur.refreshListJoueur(ctrl.getListJoueurs());
-
+        vueJoueur.refreshJoueurView(ctrl.getListJoueurs());
     }
 
     public void refreshConfigView() {
@@ -88,7 +91,6 @@ public class GeneralView extends BorderPane {
 
     public void refreshTournoiView() {
         vueTournoi.refreshTournoi();
-        vueTournoi.refreshTourToolBar();
     }
 
     public ArrayList<Joueur> getListJoueurs() {
