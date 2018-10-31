@@ -93,6 +93,9 @@ public class GeneralView extends BorderPane {
         vueTournoi.refreshTournoi();
     }
 
+    public void refreshTournoiToolbar(){
+        vueTournoi.refreshTournoiToolbar();
+    }
     public ArrayList<Joueur> getListJoueurs() {
         return vueJoueur.getListJoueurs();
     }
@@ -104,5 +107,9 @@ public class GeneralView extends BorderPane {
 
     public void selectTabTournoi() {
         tab.getSelectionModel().select(2);
+    }
+
+    public void selectCurrentTabTour() {
+        vueTournoi.selectCurrentTabTour();
     }
 }

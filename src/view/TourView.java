@@ -18,12 +18,22 @@ public class TourView extends Tab {
         ScrollPane sp = new ScrollPane();
         sp.setPadding(new Insets(5,5,5,5));
         sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
         VBox vTour = new VBox();
         vTour.setSpacing(10);
         vTour.setFillWidth(true);
+
+        if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()){
+            setStyle("-fx-background-color: rgb(196,196,196);");
+            vTour.setStyle("-fx-background-color: rgb(196,196,196);");
+            sp.setStyle("-fx-background-color: rgb(196,196,196);");
+        }
         for (int j = 0; j < tour.getListMatchs().size(); j++){
             MatchView match = new MatchView(ctrl, tour.getListMatchs().get(j), tour);
-            vTour.getChildren().add(match);
+            if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()) {
+                match.setStyle("-fx-background-color: rgb(196,196,196);");
+            }
+                vTour.getChildren().add(match);
         }
         //joueur restant
         TitledPane joueurRestant = new TitledPane();

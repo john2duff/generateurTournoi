@@ -31,3 +31,7 @@
 .joueurHeader{
     -fx-font-weight: bold;
 }
+
+.scoreSpinner{
+    -fx-text-alignment: center;
+}

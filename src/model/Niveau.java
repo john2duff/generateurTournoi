@@ -45,18 +45,18 @@ public class Niveau implements Serializable {
     public static ArrayList<Niveau> loadNiveau(){
         niveaux = new ArrayList<>();
         niveaux.add(new Niveau("P12", "Promotion", 0));
-        niveaux.add(new Niveau("P11", "Promotion", 0));
-        niveaux.add(new Niveau("P10", "Promotion", 0));
-        niveaux.add(new Niveau("D9", "Départemental", 0));
-        niveaux.add(new Niveau("D8", "Départemental", 0));
-        niveaux.add(new Niveau("D7", "Départemental", 0));
-        niveaux.add(new Niveau("R6", "Régional", 0));
-        niveaux.add(new Niveau("R5", "Régional", 0));
-        niveaux.add(new Niveau("R4", "Régional", 0));
-        niveaux.add(new Niveau("N3", "National", 0));
-        niveaux.add(new Niveau("N2", "National", 0));
-        niveaux.add(new Niveau("N1", "National", 0));
-        niveaux.add(new Niveau("Fille", "Aucun", 0));
+        niveaux.add(new Niveau("P11", "Promotion", -2));
+        niveaux.add(new Niveau("P10", "Promotion", -4));
+        niveaux.add(new Niveau("D9", "Départemental", -6));
+        niveaux.add(new Niveau("D8", "Départemental", -8));
+        niveaux.add(new Niveau("D7", "Départemental", -10));
+        niveaux.add(new Niveau("R6", "Régional", -12));
+        niveaux.add(new Niveau("R5", "Régional", -14));
+        niveaux.add(new Niveau("R4", "Régional", -16));
+        niveaux.add(new Niveau("N3", "National", -18));
+        niveaux.add(new Niveau("N2", "National", -20));
+        niveaux.add(new Niveau("N1", "National", -22));
+        niveaux.add(new Niveau("Fille", "Aucun", 2));
         return niveaux;
     }
 

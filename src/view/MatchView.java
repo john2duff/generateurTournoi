@@ -6,18 +6,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import model.Joueur;
 import model.Match;
 import model.Tour;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class MatchView extends TitledPane {
@@ -28,8 +29,12 @@ public class MatchView extends TitledPane {
 
     private final int minScore = -40;
     private final int maxScore = 40;
-    private final Spinner<Integer> scoreEquipeA;
-    private final Spinner<Integer> scoreEquipeB;
+    private Spinner<Integer> scoreEquipeA;
+    private Spinner<Integer> scoreEquipeB;
+    private Label scoreEquipeALabel;
+    private Label scoreEquipeBLabel;
+    private final VBox hJoueurEquipeA;
+    private final VBox hJoueurEquipeB;
 
     public MatchView(Controler ctrl, Match match, Tour tour) {
         this.ctrl = ctrl;
@@ -40,52 +45,70 @@ public class MatchView extends TitledPane {
         vMatch.setAlignment(Pos.CENTER);
         vMatch.setSpacing(10);
 
-        VBox hJoueurEquipeA = createVueEquipe(match.getEquipeA(), false);
-        VBox hJoueurEquipeB = createVueEquipe(match.getEquipeB(), true);
+        if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()){
+            vMatch.setStyle("-fx-background-color: rgb(196,196,196);");
+        }else{
+            vMatch.setStyle("-fx-background-color: none;");
+        }
 
-
-        scoreEquipeA = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), match.getNumeroMatch());
-        scoreEquipeA.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
-                ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue);
-                coloriseMatch();
-            }
-        });
-        scoreEquipeB = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), match.getNumeroMatch());
-        scoreEquipeB.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
-                ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue);
-                coloriseMatch();
-            }
-        });
-
-        coloriseMatch();
+        hJoueurEquipeA = createVueEquipe(match.getEquipeA(), false);
+        hJoueurEquipeB = createVueEquipe(match.getEquipeB(), true);
 
         ImageView volant = ctrl.chargeImageView("/img/main.png");
         volant.setFitHeight(30.0);
         volant.setFitWidth(30.0);
 
-        vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeA, volant, scoreEquipeB, hJoueurEquipeB);
+        if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()){
+            scoreEquipeALabel = new Label(String.valueOf(match.getScoreEquipeA()));
+            scoreEquipeALabel.setAlignment(Pos.CENTER);
+            scoreEquipeALabel.setStyle("-fx-max-width: 80; -fx-min-width: 80; -fx-font-size: 2em;");
+            scoreEquipeBLabel = new Label(String.valueOf(match.getScoreEquipeB()));
+            scoreEquipeBLabel.setAlignment(Pos.CENTER);
+            scoreEquipeBLabel.setStyle("-fx-max-width: 80; -fx-min-width: 80; -fx-font-size: 2em;");
+            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeALabel, volant, scoreEquipeBLabel, hJoueurEquipeB);
+        }else{
+            scoreEquipeA = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), true);
+            scoreEquipeA.valueProperty().addListener(new ChangeListener<Integer>() {
+                @Override
+                public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
+                    ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue, true);
+                    coloriseMatch();
+                }
+            });
+            scoreEquipeB = createScore(match.getScoreEquipeB(), tour.getNumeroTour(), false);
+            scoreEquipeB.valueProperty().addListener(new ChangeListener<Integer>() {
+                @Override
+                public void changed(ObservableValue<? extends Integer> observable,Integer oldValue, Integer newValue) {
+                    ctrl.scoreChange(tour.getNumeroTour(), match.getNumeroMatch(), newValue, false);
+                    coloriseMatch();
+                }
+            });
+            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeA, volant, scoreEquipeB, hJoueurEquipeB);
+        }
+
+        coloriseMatch();
         setContent(vMatch);
     }
 
     private void coloriseMatch() {
-        if((scoreEquipeA.getValue() >= 21 || scoreEquipeB.getValue() >= 21) && Math.abs(scoreEquipeA.getValue() - scoreEquipeB.getValue()) >= 2){
-            if (scoreEquipeA.getValue() > scoreEquipeB.getValue()){
-                scoreEquipeA.setStyle("-fx-background-color: green;");
-                scoreEquipeB.setStyle("-fx-background-color: red;");
+        if((match.getScoreEquipeA() >= 21 || match.getScoreEquipeB() >= 21) && Math.abs(match.getScoreEquipeA() - match.getScoreEquipeB()) >= 2){
+            if (match.getScoreEquipeA() > match.getScoreEquipeB()){
+                hJoueurEquipeA.setStyle("-fx-background-color: rgb(190,229,90); -fx-border-radius: 50px;");
+                hJoueurEquipeB.setStyle("-fx-background-color: rgb(244,154,154);-fx-border-radius: 50px;");
             }else{
-                scoreEquipeA.setStyle("-fx-background-color: red;");
-                scoreEquipeB.setStyle("-fx-background-color: green;");
+                hJoueurEquipeA.setStyle("-fx-background-color: rgb(244,154,154);-fx-border-radius: 50px;");
+                hJoueurEquipeB.setStyle("-fx-background-color: rgb(190,229,90);-fx-border-radius: 50px;");
             }
+        }else{
+            hJoueurEquipeA.setStyle("-fx-background-color: none;-fx-border-radius: 50px;");
+            hJoueurEquipeB.setStyle("-fx-background-color: none;-fx-border-radius: 50px;");
         }
     }
 
     public VBox createVueEquipe(ArrayList<Joueur> equipe, boolean droite){
         VBox vboxEquipe = new VBox();
         vboxEquipe.setSpacing(5);
+        vboxEquipe.setPadding(new Insets(10, 10, 10, 10));
         for (int k = 0; k < equipe.size(); k++){
             HBox hEquipe = new HBox();
             Joueur joueur = equipe.get(k);
@@ -94,18 +117,27 @@ public class MatchView extends TitledPane {
             ImageView photo = ctrl.chargePhoto(joueur);
             VBox vNomPrenom = new VBox();
             Label prenom = new Label(joueur.getPrenom());
-            prenom.setStyle("-fx-min-width: 100; -fx-text-alignment: center;");
+            prenom.setAlignment(Pos.CENTER);
             Label nom = new Label(joueur.getNom());
-            nom.setStyle("-fx-min-width: 100;-fx-text-alignment: center;");
-            vNomPrenom.getChildren().addAll(prenom, nom);
+            nom.setAlignment(Pos.CENTER);
+            if(prenom.getText().equals("") && nom.getText().equals("")){
+                vNomPrenom.getChildren().addAll(prenom);
+            }else if(prenom.getText().equals("")){
+                vNomPrenom.getChildren().addAll(nom);
+            }else if(nom.getText().equals("")){
+                vNomPrenom.getChildren().addAll(prenom);
+            }else {
+                vNomPrenom.getChildren().addAll(prenom, nom);
+            }
+            vNomPrenom.setStyle("-fx-min-width: 100;");
+            vNomPrenom.setAlignment(Pos.CENTER);
+
             Label niveau = new Label(joueur.getNiveau().getNomNiveau());
+            niveau.setStyle("-fx-min-width: 30;");
+            niveau.setAlignment(Pos.CENTER);
             if (droite){
-                prenom.setAlignment(Pos.CENTER_LEFT);
-                nom.setAlignment(Pos.CENTER_LEFT);
                 hEquipe.getChildren().addAll(photo, niveau, vNomPrenom);
             }else{
-                prenom.setAlignment(Pos.CENTER_RIGHT);
-                nom.setAlignment(Pos.CENTER_RIGHT);
                 hEquipe.getChildren().addAll(vNomPrenom, niveau, photo);
             }
             vboxEquipe.getChildren().addAll(hEquipe);
@@ -113,11 +145,15 @@ public class MatchView extends TitledPane {
         return vboxEquipe;
     }
 
-    public Spinner<Integer> createScore(Integer scoreEquipe, Integer indexTour, Integer indexMatch){
+    public Spinner<Integer> createScore(Integer scoreEquipe, Integer indexTour, boolean equipeA){
         Spinner<Integer> scoreEquipeSpinner = new Spinner<>(minScore, maxScore, scoreEquipe);
-        scoreEquipeSpinner.setStyle("-fx-max-width: 60; -fx-min-width: 60;");
+        scoreEquipeSpinner.setStyle("-fx-text-alignment: RIGHT; -fx-max-width: 80; -fx-min-width: 80; -fx-font-size: 2em;");
+        if (equipeA){
+            scoreEquipeSpinner.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
+        }
         scoreEquipeSpinner.setDisable(!indexTour.equals(ctrl.getCurrentTour()));
-        scoreEquipeSpinner.setEditable(true);
+        scoreEquipeSpinner.setEditable(false);
         return scoreEquipeSpinner;
     }
+
 }

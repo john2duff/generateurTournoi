@@ -6,37 +6,87 @@ import java.util.ArrayList;
 public class Match implements Serializable {
 
 
-    public void setScoreEquipeA(Integer score) {
-
-    }
-
     public enum Equipe {EQUIPE_A, EQUIPE_B;};
 
     private ArrayList<Joueur> equipeA;
-    private ArrayList<Joueur> equipeB;
 
+    private ArrayList<Joueur> equipeB;
     boolean redondanceEquipier;
+    private Integer scoreEquipeA;
+    private Integer scoreEquipeB;
     private final Integer numeroMatch;
 
     boolean redondanceAdversaire;
-
     public Match(Integer indexMatch) {
         equipeA = new ArrayList<>();
         equipeB = new ArrayList<>();
         redondanceAdversaire = false;
         redondanceEquipier = false;
         this.numeroMatch = indexMatch;
-
     }
+
+    public boolean victoire(Equipe equipe) {
+        if (equipe == Equipe.EQUIPE_A){
+            return scoreEquipeA > scoreEquipeB && (scoreEquipeA-scoreEquipeB) >=2;
+        }else{
+            return scoreEquipeB > scoreEquipeA && (scoreEquipeB-scoreEquipeA) >=2;
+        }
+    }
+
+    public boolean defaitePlus(Equipe equipe) {
+        if (equipe == Equipe.EQUIPE_A){
+            return scoreEquipeA < scoreEquipeB && scoreEquipeB >= 22;
+        }else{
+            return scoreEquipeB < scoreEquipeA && scoreEquipeA >= 22;
+        }
+    }
+
+    public boolean defaite(Equipe equipe) {
+        if (equipe == Equipe.EQUIPE_A){
+            return scoreEquipeA < scoreEquipeB;
+        }else{
+            return scoreEquipeB < scoreEquipeA;
+        }
+    }
+
+    public void setInitialScore() {
+        Integer scoreA = getInitialScoreEquipeA();
+        Integer scoreB = getInitialScoreEquipeB();
+        //equilibrage
+        if (scoreA <= scoreB){
+            scoreEquipeA = scoreA - scoreB;
+            scoreEquipeB = 0;
+        }else{
+            scoreEquipeB = scoreB - scoreA;
+            scoreEquipeA = 0;
+        }
+    }
+
+    public void setScoreEquipeA(Integer score) {
+        scoreEquipeA = score;
+    }
+    public void setScoreEquipeB(Integer score) {
+        scoreEquipeB = score;
+    }
+
+
     public Integer getNumeroMatch() {
         return numeroMatch;
     }
 
     public boolean estFini() {
-        return (getScoreEquipeA() >= 21 || getScoreEquipeB() >= 21) && Math.abs(getScoreEquipeA() - getScoreEquipeB()) > 2;
+        return (getScoreEquipeA() >= 21 || getScoreEquipeB() >= 21) && Math.abs(getScoreEquipeA() - getScoreEquipeB()) >= 2;
     }
 
     public Integer getScoreEquipeA() {
+        return scoreEquipeA;
+    }
+
+    public Integer getScoreEquipeB() {
+        return scoreEquipeB;
+    }
+
+    public Integer getInitialScoreEquipeA() {
         Integer points = 0;
         for (int i = 0; i < equipeA.size(); i++){
             points += equipeA.get(i).getPointsHandicap();
@@ -44,7 +94,7 @@ public class Match implements Serializable {
         return points;
     }
 
-    public Integer getScoreEquipeB() {
+    public Integer getInitialScoreEquipeB() {
         Integer points = 0;
         for (int i = 0; i < equipeA.size(); i++){
             points += equipeA.get(i).getPointsHandicap();

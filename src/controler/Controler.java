@@ -25,6 +25,7 @@ public class Controler {
     private Tournoi currentTournoi = null;
     private boolean saveAuto;
     private final String dossierRacine = "/Tournois/";
+    private boolean tournoiAEnregistrer;
 
     public Controler(Stage primaryStage) {
 
@@ -39,12 +40,11 @@ public class Controler {
         currentTournoi.ajouteJoueur(stephane);
         currentTournoi.ajouteJoueur(audrey);*/
 
-        this.saveAuto = false;
         this.primaryStage = primaryStage;
 
         vueGeneral = new GeneralView(this);
         Parent root = vueGeneral;
-        Scene scenePrincipal = new Scene(root, 600, 600);
+        Scene scenePrincipal = new Scene(root, 700, 700);
         scenePrincipal.getStylesheets().add("view/Style/Style.css");
         primaryStage.setScene(scenePrincipal);
 
@@ -63,6 +63,10 @@ public class Controler {
         vueGeneral.refreshTournoi();
 
         primaryStage.show();
+    }
+
+    public boolean isTournoiAEnregistrer() {
+        return tournoiAEnregistrer;
     }
 
     public Tournoi getCurrentTournoi() {
@@ -264,6 +268,9 @@ public class Controler {
         if (saveAuto){
             enregistreTournoi();
             updateInfo("Enregistrement automatique effectué");
+            tournoiAEnregistrer = false;
+        }else{
+            tournoiAEnregistrer = true;
         }
     }
 
@@ -284,6 +291,7 @@ public class Controler {
 
     public void saveAuto(boolean selected) {
         this.saveAuto = selected;
+        vueGeneral.refreshMainToolbar();
     }
 
     public void supprimerTout() {
@@ -393,6 +401,9 @@ public class Controler {
 
     public void clotureTour() {
         currentTournoi.clotureTour();
+        vueGeneral.refreshTournoi();
+        vueGeneral.selectCurrentTabTour();
+        saveAutomatique();
     }
 
     public void redistribuerJoueur() {
@@ -400,8 +411,10 @@ public class Controler {
         vueGeneral.refreshTournoi();
     }
 
-    public void scoreChange(Integer numeroTour, Integer numeroMatch, Integer newValue) {
-        currentTournoi.changeScore(numeroTour, numeroMatch, newValue);
+    public void scoreChange(Integer numeroTour, Integer numeroMatch, Integer newValue, boolean equipeA) {
+        currentTournoi.changeScore(numeroTour, numeroMatch, newValue, equipeA);
+        saveAutomatique();
+        vueGeneral.refreshTournoiToolbar();
     }
 
     public void arreterTournoi() {

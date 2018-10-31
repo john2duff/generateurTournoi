@@ -34,4 +34,13 @@ public class TournoiView extends BorderPane {
         tournoiToolbar.refresh();
     }
 
+    public void refreshTournoiToolbar(){
+        tournoiToolbar.refresh();
+    }
+
+    public void selectCurrentTabTour() {
+        if (currentTournoi.getCurrentTour() != null){
+            tab.getSelectionModel().select(currentTournoi.getCurrentTour());
+        }
+    }
 }

@@ -11,30 +11,12 @@ import java.util.List;
 public class Tournoi implements Serializable {
 
     private String nomTournoi;
-
-    public void clotureTour() {
-        if (currentTour < listTours.size()){
-            currentTour++;
-        }else{
-            System.out.println("tournoi fini");
-        }
-    }
-
-    public void changeScore(Integer numeroTour, Integer numeroMatch, Integer newValue) {
-        listTours.get(numeroTour).getListMatchs().get(numeroMatch).setScoreEquipeA(Integer.parseInt(String.valueOf(newValue)));
-    }
-
-
     public enum TypeTournoi {SIMPLE, DOUBLE;}
 
-
     private TypeTournoi typeTournoi;
-
     private Integer nombreTour;
     private Integer nombreTerrain;
-
     private Integer ecartMaxi;
-
     private Integer currentTour;
     private ArrayList<Joueur> listJoueurs;
     private ArrayList<Joueur> listJoueursAttribues;
@@ -46,7 +28,6 @@ public class Tournoi implements Serializable {
     private Integer pointVictoire;
     private Integer pointDefaite;
     private Integer pointDefaitePlus;
-
     public Tournoi() {}
 
     public Tournoi(String nomTournoi, TypeTournoi type, Integer nombreTour, Integer nombreTerrain) {
@@ -65,6 +46,54 @@ public class Tournoi implements Serializable {
         loadContraintes();
     }
 
+    public void actualiserPoints(){
+        initScoreJoueurs();
+        for (int i = 0; i < listTours.size(); i++){
+            if (isTourCloture(listTours.get(i))){
+                for (int j = 0; j < listTours.get(i).getListMatchs().size(); j++){
+                    distribuePoints(listTours.get(i).getListMatchs().get(j));
+                }
+            }
+        }
+    }
+
+    private void distribuePoints(Match match) {
+        //equipe A
+        for(int i = 0; i < match.getEquipeA().size(); i++){
+            if (match.victoire(Match.Equipe.EQUIPE_A)){
+
+            }
+        }
+    }
+
+    private void initScoreJoueurs() {
+        for (int i = 0; i < listJoueurs.size(); i++){
+            listJoueurs.get(i).setPoints(0);
+        }
+    }
+
+    public boolean isTourCloture(Tour tour){
+        return currentTour >= tour.getNumeroTour();
+    }
+
+
+    public void clotureTour() {
+        if (currentTour < listTours.size()-1){
+            currentTour++;
+        }else{
+            currentTour = null;
+            currentTour = null;
+            System.out.println("tournoi fini");
+        }
+    }
+
+    public void changeScore(Integer numeroTour, Integer numeroMatch, Integer newValue, boolean equipeA) {
+        if (equipeA){
+            listTours.get(numeroTour).getListMatchs().get(numeroMatch).setScoreEquipeA(Integer.parseInt(String.valueOf(newValue)));
+        }else{
+            listTours.get(numeroTour).getListMatchs().get(numeroMatch).setScoreEquipeB(Integer.parseInt(String.valueOf(newValue)));
+        }
+    }
 
     public void loadContraintes(){
         listContraintes = new ArrayList<>();
@@ -345,6 +374,12 @@ public class Tournoi implements Serializable {
         }
     }
 
+    public void initJoueurs(){
+        for (int i = 0; i < listJoueurs.size(); i++){
+            listJoueurs.get(i).init();
+        }
+    }
+
     public boolean generer(){
         Joueur joueurTireAuSort;
         //si le tournoi n'a pas commencé
@@ -352,15 +387,13 @@ public class Tournoi implements Serializable {
             currentTour = 0;
         }
 
-        for (int i = currentTour; i < listTours.size(); i++){
-            listTours.remove(i);
-            i--;
-        }
+        initJoueurs();
 
         listJoueursAttente = new ArrayList<>();
+        listTours = new ArrayList<>();
 
         if (getNbreJoueurSuffisant()){
-            for (int i = currentTour; i < nombreTour ; i++){
+            for (int i = 0; i < nombreTour ; i++){
                 Tour tour = new Tour(i);
                 listJoueursAttribues = new ArrayList<Joueur>();
                 mettreJoueurDansSac();
@@ -394,7 +427,7 @@ public class Tournoi implements Serializable {
                             listJoueursAttribues.add(joueurTireAuSort);
                         }
                     }
-
+                    match.setInitialScore();
                     if (match.getEquipeA().size() > 0)
                         tour.ajouteMatch(match);
                     mettreJoueurDansSac();

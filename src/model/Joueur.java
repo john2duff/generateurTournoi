@@ -9,14 +9,15 @@ public class Joueur implements Serializable {
     public enum Sexe {HOMME, FEMME;};
 
     private String photoUrl;
+
     private String prenom;
     private String nom;
     private Niveau niveau;
     private Sexe sexe;
     private Boolean actif;
-
     private ArrayList<Joueur> listAdversaires;
     private ArrayList<Joueur> listEquipier;
+    private Integer points;
 
     public Joueur(String prenom, String nom, Niveau niveau, Sexe sexe, boolean actif) {
         this.photoUrl = null;
@@ -25,8 +26,17 @@ public class Joueur implements Serializable {
         this.niveau = niveau;
         this.sexe = sexe;
         this.actif = actif;
-        this.listEquipier = new ArrayList<Joueur>();
-        this.listAdversaires = new ArrayList<Joueur>();
+        this.points = 0;
+        init();
+    }
+
+    public void init() {
+        listEquipier = new ArrayList<>();
+        listAdversaires = new ArrayList<>();
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
     public boolean isActif() {

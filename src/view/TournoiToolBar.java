@@ -36,29 +36,29 @@ public class TournoiToolBar extends ToolBar {
             }
         });
 
-        getItems().addAll(clotureTour, distribuerJoueur);
+        getItems().addAll(clotureTour);
     }
 
     public void refresh(){
         Integer currentTour = ctrl.getCurrentTournoi().getCurrentTour();
         if (currentTour != null){
-            clotureTour.setText("Cloturer le tour " + (currentTour+1));
-            if (ctrl.getCurrentTournoi().getListTours().size() > 0) {
-                Tour tour = ctrl.getCurrentTournoi().getListTours().get(currentTour);
-                if (tour.isCloturable()) {
-                    clotureTour.setDisable(false);
-                } else {
-                    clotureTour.setDisable(true);
-                    if (!ctrl.tourIsCloture(tour)) {
-                        clotureTour.setVisible(true);
-                    } else {
+            if (currentTour  == ctrl.getCurrentTournoi().getListTours().size() - 1){
+                clotureTour.setText("Clôturer le tournoi");
+                clotureTour.setDisable(false);
+            }else{
+                clotureTour.setText("Clôturer le tour " + (currentTour+1));
+                if (ctrl.getCurrentTournoi().getListTours().size() > 0) {
+                    Tour tour = ctrl.getCurrentTournoi().getListTours().get(currentTour);
+                    if (tour.isCloturable() && !ctrl.tourIsCloture(tour)) {
                         clotureTour.setDisable(false);
+                    } else {
+                        clotureTour.setDisable(true);
                     }
                 }
             }
         }else{
-            clotureTour.setVisible(false);
-            distribuerJoueur.setVisible(false);
+            clotureTour.setText("Aucun tournoi en cours");
+            clotureTour.setDisable(true);
         }
 
     }

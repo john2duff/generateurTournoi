@@ -39,6 +39,7 @@ public class MainToolbar extends ToolBar {
                 ctrl.saveAuto(enregistrementAuto.isSelected());
             }
         });
+        enregistrementAuto.setSelected(true);
 
         renameTournoi = new Button("Renommer le tournoi");
         renameTournoi.setOnAction(new EventHandler<ActionEvent>() {
