@@ -106,7 +106,7 @@ public class Controler {
         if (!dossier.exists()){
             dossier.mkdirs();
         }
-        File dossierImage = new File(getRepertoireCourant() + "/img/");
+        File dossierImage = new File(getRepertoireCourant() + "/src/Photos");
         if (!dossierImage.exists()){
             dossierImage.mkdirs();
         }
@@ -338,12 +338,12 @@ public class Controler {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner une image");
-        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/img"));
+        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/src/Photos/"));
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             //copie
-            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/img/" + file.getName()));
-            currentTournoi.updatePhoto(ind, "/img/" + file.getName());
+            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/src/Photos/" + file.getName()));
+            currentTournoi.updatePhoto(ind, "/Photos/" + file.getName());
             vueGeneral.refreshJoueurView();
         }
     }
