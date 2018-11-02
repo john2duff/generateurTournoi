@@ -18,7 +18,6 @@ import javax.swing.*;
 public class JoueurCellFactory extends HBox {
 
     private final CheckBox actif = new CheckBox();
-    private Button photoEdition;
     private ImageView photo;
     private final Label prenom = new Label();
     private final Label nom = new Label();
@@ -35,6 +34,7 @@ public class JoueurCellFactory extends HBox {
 
     public JoueurCellFactory(boolean modeEdition, Joueur j, Controler ctrl, Integer index) {
         this.ctrl = ctrl;
+        photo = ctrl.chargePhoto(j);
         if (!modeEdition){
             //datas
             actif.setSelected(j.getActif());
@@ -42,10 +42,8 @@ public class JoueurCellFactory extends HBox {
             actif.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     ctrl.selectionJoueur(((CheckBox)e.getSource()).getId(), ((CheckBox)e.getSource()).isSelected());
-
                 }
             });
-            photo = ctrl.chargePhoto(j);
             prenom.setText(j.getPrenom());
             nom.setText(j.getNom());
             niveau.setText(j.getNiveau().getNomNiveau());
@@ -64,13 +62,6 @@ public class JoueurCellFactory extends HBox {
             });
         }else{
             //datas
-            photoEdition = new Button("", ctrl.chargePhoto(j));
-            photoEdition.setId(index.toString());
-            photoEdition.setOnAction(new EventHandler<ActionEvent>() {
-                @Override public void handle(ActionEvent e) {
-                    ctrl.choisirPhoto(((Button)e.getSource()).getId());
-                }
-            });
             prenomEdition.setText(j.getPrenom());
             nomEdition.setText(j.getNom());
 
@@ -94,7 +85,7 @@ public class JoueurCellFactory extends HBox {
                 }
             });
 
-            getChildren().addAll(photoEdition, prenomEdition, nomEdition, sexeEdition, niveauEdition, supprimerEdition);
+            getChildren().addAll(photo, prenomEdition, nomEdition, sexeEdition, niveauEdition, supprimerEdition);
         }
         setStyleJoueur(j);
     }

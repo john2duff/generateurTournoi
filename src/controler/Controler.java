@@ -1,6 +1,5 @@
 package controler;
 
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -50,14 +49,7 @@ public class Controler {
         scenePrincipal.getStylesheets().add("view/Style/Style.css");
         primaryStage.setScene(scenePrincipal);
 
-        InputStream input = getClass().getResourceAsStream("/img/main.png");
-        Image image = null;
-        try{
-            image = new Image(input);
-        }catch (Exception e){
-            System.out.println("Image introuvable");
-        }
-        primaryStage.getIcons().add(image);
+        primaryStage.getIcons().add(chargeImage("/img/main.png"));
 
         nouveauTournoi();
         primaryStage.setTitle(currentTournoi.getNomTournoi());
@@ -76,13 +68,32 @@ public class Controler {
     }
 
     public ImageView chargeImageView(String chemin){
-        InputStream input = getClass().getResourceAsStream(chemin);
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(getRepertoireCourant() + "/" + chemin);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         Image image;
         ImageView imageView;
         try{
             image = new Image(input);
             imageView = new ImageView(image);
+            input.close();
             return imageView;
+        }catch (Exception e){
+            System.out.println("Image introuvable");
+            return null;
+        }
+    }
+
+    public Image chargeImage(String chemin){
+        FileInputStream input = null;
+        Image image;
+        try{
+            input = new FileInputStream(getRepertoireCourant() + "/" + chemin);
+            image = new Image(input);
+            return image;
         }catch (Exception e){
             System.out.println("Image introuvable");
             return null;
@@ -106,7 +117,7 @@ public class Controler {
         if (!dossier.exists()){
             dossier.mkdirs();
         }
-        File dossierImage = new File(getRepertoireCourant() + "/src/Photos");
+        File dossierImage = new File(getRepertoireCourant() + "/Photos");
         if (!dossierImage.exists()){
             dossierImage.mkdirs();
         }
@@ -338,11 +349,11 @@ public class Controler {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner une image");
-        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/src/Photos/"));
+        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/Photos/"));
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             //copie
-            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/src/Photos/" + file.getName()));
+            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/Photos/" + file.getName()));
             currentTournoi.updatePhoto(ind, "/Photos/" + file.getName());
             vueGeneral.refreshJoueurView();
         }
@@ -350,18 +361,34 @@ public class Controler {
 
     public ImageView chargePhoto(Joueur j) {
         String chemin;
-        if (j.getPhoto() == null){
+        ImageView img = null;
+        if (j.getPhoto() != null){
+            chemin =j.getPhoto();
+            img = chargeImageView(chemin);
+            if (img == null){
+                img = chargePhotoDefaut(j);
+            }
+        }else{
+            img = chargePhotoDefaut(j);
+        }
+        if (img != null){
+            img.setFitHeight(30.0);
+            img.setFitWidth(30.0);
+        }
+        return img;
+    }
+
+    public ImageView chargePhotoDefaut(Joueur j){
+        String chemin;
+        ImageView img = null;
+        if (img == null){
             if (j.getSexe() == Joueur.Sexe.HOMME){
                 chemin = "/img/user-male-black-shape.png";
             }else{
                 chemin = "/img/woman.png";
             }
-        }else{
-            chemin =j.getPhoto();
+            img = chargeImageView(chemin);
         }
-        ImageView img =  chargeImageView(chemin);
-        img.setFitHeight(30.0);
-        img.setFitWidth(30.0);
         return img;
     }
 
@@ -394,7 +421,7 @@ public class Controler {
         if (!tournoiEnCours()){
             Integer ind = Integer.valueOf(id);
             currentTournoi.enregistreSelection(ind, actif);
-            vueGeneral.refreshTournoi();
+            vueGeneral.refreshJoueurView();
         }else{
             updateInfo("Un tournoi est en cours, veuillez arrêter le tournoi avant de sélectionner des joueurs !");
         }

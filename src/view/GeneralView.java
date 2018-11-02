@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import model.Joueur;
 import model.Tournoi;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class GeneralView extends BorderPane {
@@ -66,11 +67,11 @@ public class GeneralView extends BorderPane {
         return statusBar;
     }
 
-    public void ouvreTournoi(){
+    public void ouvreTournoi() {
         refreshTournoi();
     }
 
-    public void refreshTournoi(){
+    public void refreshTournoi() {
         refreshJoueurView();
         refreshConfigView();
         refreshTournoiView();

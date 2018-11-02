@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 
+import java.io.FileNotFoundException;
+
 public class ConfigToolBar extends ToolBar {
 
     private final Controler ctrl;

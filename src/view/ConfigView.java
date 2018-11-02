@@ -15,6 +15,7 @@ import model.Niveau;
 import model.Tournoi;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ConfigView extends BorderPane {
