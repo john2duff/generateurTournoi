@@ -41,20 +41,19 @@ public class TournoiToolBar extends ToolBar {
 
     public void refresh(){
         Integer currentTour = ctrl.getCurrentTournoi().getCurrentTour();
-        if (currentTour != null){
-            if (currentTour  == ctrl.getCurrentTournoi().getListTours().size() - 1){
-                clotureTour.setText("Clôturer le tournoi");
-                clotureTour.setDisable(false);
-            }else{
-                clotureTour.setText("Clôturer le tour " + (currentTour+1));
-                if (ctrl.getCurrentTournoi().getListTours().size() > 0) {
-                    Tour tour = ctrl.getCurrentTournoi().getListTours().get(currentTour);
-                    if (tour.isCloturable() && !ctrl.tourIsCloture(tour)) {
-                        clotureTour.setDisable(false);
-                    } else {
-                        clotureTour.setDisable(true);
-                    }
+        if (ctrl.tournoiEnCours()){
+            if (currentTour == null){
+                clotureTour.setText("Tournoi terminé");
+                clotureTour.setDisable(true);
+
+            }else {
+                Tour tour = ctrl.getCurrentTournoi().getListTours().get(currentTour);
+                if (currentTour == ctrl.getCurrentTournoi().getListTours().size() - 1) {
+                    clotureTour.setText("Clôturer le tournoi");
+                }else {
+                    clotureTour.setText("Clôturer le tour " + (currentTour+1));
                 }
+                if (tour.isCloturable()) clotureTour.setDisable(false); else clotureTour.setDisable(true);
             }
         }else{
             clotureTour.setText("Aucun tournoi en cours");

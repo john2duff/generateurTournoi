@@ -42,8 +42,10 @@ public class JoueurView extends BorderPane {
         vboxJoueur.getChildren().clear();
         //ajout joueurs
         for (int i = 0; i < listJoueurs.size(); i++){
-            JoueurCellFactory jLigne = new JoueurCellFactory(joueurToolbar.getModeEdition(), listJoueurs.get(i), ctrl, i);
-            vboxJoueur.getChildren().add(jLigne);
+            if (!ctrl.tournoiEnCours() || (ctrl.tournoiEnCours() && listJoueurs.get(i).isActif())){
+                JoueurCellFactory jLigne = new JoueurCellFactory(joueurToolbar.getModeEdition(), listJoueurs.get(i), ctrl, i);
+                vboxJoueur.getChildren().add(jLigne);
+            }
         }
         joueurToolbar.refresh();
     }

@@ -14,7 +14,9 @@ import model.*;
 import view.GeneralView;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 public class Controler {
@@ -23,7 +25,7 @@ public class Controler {
     private GeneralView vueGeneral;
     private Stage primaryStage;
     private Tournoi currentTournoi = null;
-    private boolean saveAuto;
+    private boolean saveAuto = true;
     private final String dossierRacine = "/Tournois/";
     private boolean tournoiAEnregistrer;
 
@@ -267,7 +269,10 @@ public class Controler {
     public void saveAutomatique(){
         if (saveAuto){
             enregistreTournoi();
-            updateInfo("Enregistrement automatique effectué");
+            SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
+            SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+            Date currentTime = new Date();
+            updateInfo("Enregistré à " + d.format(currentTime) + " - " + h.format(currentTime));
             tournoiAEnregistrer = false;
         }else{
             tournoiAEnregistrer = true;
@@ -393,6 +398,7 @@ public class Controler {
         }else{
             updateInfo("Un tournoi est en cours, veuillez arrêter le tournoi avant de sélectionner des joueurs !");
         }
+        saveAutomatique();
     }
 
     public boolean tourIsCloture(Tour tour) {
@@ -413,18 +419,19 @@ public class Controler {
 
     public void scoreChange(Integer numeroTour, Integer numeroMatch, Integer newValue, boolean equipeA) {
         currentTournoi.changeScore(numeroTour, numeroMatch, newValue, equipeA);
-        saveAutomatique();
         vueGeneral.refreshTournoiToolbar();
+        saveAutomatique();
     }
 
     public void arreterTournoi() {
-        currentTournoi.setCurrentTour(null);
+        currentTournoi.setTournoiEnCours(false);
         vueGeneral.refreshTournoi();
+        saveAutomatique();
     }
 
     public boolean tournoiEnCours() {
         if (getCurrentTournoi() != null)
-            return getCurrentTournoi().getCurrentTour() != null;
+            return getCurrentTournoi().isTournoiEnCours();
         else
             return false;
     }

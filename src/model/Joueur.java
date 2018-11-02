@@ -11,6 +11,7 @@ public class Joueur implements Serializable {
     private String photoUrl;
 
     private String prenom;
+
     private String nom;
     private Niveau niveau;
     private Sexe sexe;
@@ -18,7 +19,6 @@ public class Joueur implements Serializable {
     private ArrayList<Joueur> listAdversaires;
     private ArrayList<Joueur> listEquipier;
     private Integer points;
-
     public Joueur(String prenom, String nom, Niveau niveau, Sexe sexe, boolean actif) {
         this.photoUrl = null;
         this.prenom = prenom;
@@ -35,8 +35,16 @@ public class Joueur implements Serializable {
         listAdversaires = new ArrayList<>();
     }
 
+    public void ajoutePoints(Integer points) {
+        this.points += points;
+    }
+
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public Integer getPoints() {
+        return points;
     }
 
     public boolean isActif() {

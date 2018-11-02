@@ -28,6 +28,7 @@ public class Tournoi implements Serializable {
     private Integer pointVictoire;
     private Integer pointDefaite;
     private Integer pointDefaitePlus;
+    public Boolean tournoiEnCours;
     public Tournoi() {}
 
     public Tournoi(String nomTournoi, TypeTournoi type, Integer nombreTour, Integer nombreTerrain) {
@@ -43,16 +44,15 @@ public class Tournoi implements Serializable {
         this.pointDefaitePlus = 2;
         this.pointDefaite = 1;
         this.ecartMaxi = 10;
+        this.tournoiEnCours = false;
         loadContraintes();
     }
 
     public void actualiserPoints(){
         initScoreJoueurs();
         for (int i = 0; i < listTours.size(); i++){
-            if (isTourCloture(listTours.get(i))){
-                for (int j = 0; j < listTours.get(i).getListMatchs().size(); j++){
-                    distribuePoints(listTours.get(i).getListMatchs().get(j));
-                }
+            for (int j = 0; j < listTours.get(i).getListMatchs().size(); j++){
+                distribuePoints(listTours.get(i).getListMatchs().get(j));
             }
         }
     }
@@ -61,7 +61,21 @@ public class Tournoi implements Serializable {
         //equipe A
         for(int i = 0; i < match.getEquipeA().size(); i++){
             if (match.victoire(Match.Equipe.EQUIPE_A)){
-
+                match.getEquipeA().get(i).ajoutePoints(this.pointVictoire);
+            }else if (match.defaitePlus(Match.Equipe.EQUIPE_A)){
+                match.getEquipeA().get(i).ajoutePoints(this.pointDefaitePlus);
+            }else if (match.defaite(Match.Equipe.EQUIPE_A)){
+                match.getEquipeA().get(i).ajoutePoints(this.pointDefaite);
+            }
+        }
+        //equipe B
+        for(int i = 0; i < match.getEquipeB().size(); i++){
+            if (match.victoire(Match.Equipe.EQUIPE_B)){
+                match.getEquipeB().get(i).ajoutePoints(this.pointVictoire);
+            }else if (match.defaitePlus(Match.Equipe.EQUIPE_B)){
+                match.getEquipeB().get(i).ajoutePoints(this.pointDefaitePlus);
+            }else if (match.defaite(Match.Equipe.EQUIPE_B)){
+                match.getEquipeB().get(i).ajoutePoints(this.pointDefaite);
             }
         }
     }
@@ -81,7 +95,6 @@ public class Tournoi implements Serializable {
         if (currentTour < listTours.size()-1){
             currentTour++;
         }else{
-            currentTour = null;
             currentTour = null;
             System.out.println("tournoi fini");
         }
@@ -115,6 +128,17 @@ public class Tournoi implements Serializable {
                 return listContraintes.get(i);
         }
         return null;
+    }
+
+    public Boolean isTournoiEnCours() {
+        return tournoiEnCours;
+    }
+
+    public void setTournoiEnCours(boolean tournoiEnCours) {
+        this.tournoiEnCours = tournoiEnCours;
+        if (tournoiEnCours == false){
+            this.listTours = new ArrayList<Tour>();
+        }
     }
 
     public Integer getCurrentTour() {
@@ -386,6 +410,7 @@ public class Tournoi implements Serializable {
         if (currentTour == null){
             currentTour = 0;
         }
+        tournoiEnCours = true;
 
         initJoueurs();
 

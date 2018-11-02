@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import model.Joueur;
 import model.Niveau;
 
+import javax.swing.*;
+
 
 public class JoueurCellFactory extends HBox {
 
@@ -21,6 +23,7 @@ public class JoueurCellFactory extends HBox {
     private final Label prenom = new Label();
     private final Label nom = new Label();
     private final Label niveau = new Label();
+    private final Label points = new Label();
 
     private final TextField nomEdition = new TextField();
     private final TextField prenomEdition = new TextField();
@@ -46,10 +49,11 @@ public class JoueurCellFactory extends HBox {
             prenom.setText(j.getPrenom());
             nom.setText(j.getNom());
             niveau.setText(j.getNiveau().getNomNiveau());
+            points.setText(j.getPoints().toString());
             if (!ctrl.tournoiEnCours()){
                 getChildren().setAll(actif, photo, prenom, nom, niveau);
             }else{
-                getChildren().setAll(photo, prenom, nom, niveau);
+                getChildren().setAll(photo, prenom, nom, niveau, points);
             }
             setId(index.toString());
             setOnMouseClicked(new EventHandler<MouseEvent>() {

@@ -55,7 +55,7 @@ public class MainToolbar extends ToolBar {
             }
         });
 
-        getItems().addAll(nouveau, ouvrir, enregistrer, renameTournoi, enregistrementAuto);
+        getItems().addAll(nouveau, ouvrir, /*enregistrer,*/ renameTournoi/*, enregistrementAuto*/);
 
     }
 

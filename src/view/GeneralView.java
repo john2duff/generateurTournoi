@@ -82,6 +82,7 @@ public class GeneralView extends BorderPane {
     }
 
     public void refreshJoueurView() {
+        if(ctrl.tournoiEnCours())ctrl.getCurrentTournoi().actualiserPoints();
         vueJoueur.refreshJoueurView(ctrl.getListJoueurs());
     }
 
