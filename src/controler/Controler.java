@@ -68,12 +68,7 @@ public class Controler {
     }
 
     public ImageView chargeImageView(String chemin){
-        FileInputStream input = null;
-        try {
-            input = new FileInputStream(getRepertoireCourant() + "/" + chemin);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        InputStream input = getClass().getResourceAsStream(chemin);
         Image image;
         ImageView imageView;
         try{
@@ -88,10 +83,9 @@ public class Controler {
     }
 
     public Image chargeImage(String chemin){
-        FileInputStream input = null;
+        InputStream input = getClass().getResourceAsStream(chemin);
         Image image;
         try{
-            input = new FileInputStream(getRepertoireCourant() + "/" + chemin);
             image = new Image(input);
             return image;
         }catch (Exception e){
@@ -117,10 +111,10 @@ public class Controler {
         if (!dossier.exists()){
             dossier.mkdirs();
         }
-        File dossierImage = new File(getRepertoireCourant() + "/Photos");
+        /*File dossierImage = new File(getRepertoireCourant() + "/src/Photos");
         if (!dossierImage.exists()){
             dossierImage.mkdirs();
-        }
+        }*/
         return dossier.getAbsolutePath();
     }
 
@@ -349,11 +343,11 @@ public class Controler {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner une image");
-        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/Photos/"));
+        fileChooser.setInitialDirectory(new File(getRepertoireCourant() + "/src/Photos/"));
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             //copie
-            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/Photos/" + file.getName()));
+            copier(new File(file.getAbsolutePath()), new File(getRepertoireCourant() + "/src/Photos/" + file.getName()));
             currentTournoi.updatePhoto(ind, "/Photos/" + file.getName());
             vueGeneral.refreshJoueurView();
         }
@@ -421,7 +415,7 @@ public class Controler {
         if (!tournoiEnCours()){
             Integer ind = Integer.valueOf(id);
             currentTournoi.enregistreSelection(ind, actif);
-            vueGeneral.refreshJoueurView();
+            vueGeneral.refreshTournoi();
         }else{
             updateInfo("Un tournoi est en cours, veuillez arrêter le tournoi avant de sélectionner des joueurs !");
         }
