@@ -1,0 +1,8 @@
+﻿
+créer le jar
+
+jar cvmf src/META-INF/MANIFEST.MF generateurTournoi.jar out/production/generateurTournoiGit/controler/*.class out/production/generateurTournoiGit/model/*.class out/production/generateurTournoiGit/view/*.class
+
+lancer le jar
+
+java -jar generateurTournoi.jar
