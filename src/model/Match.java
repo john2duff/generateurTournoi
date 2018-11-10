@@ -12,16 +12,20 @@ public class Match implements Serializable {
 
     private ArrayList<Joueur> equipeB;
     boolean redondanceEquipier;
+    boolean redondanceAdversaire;
+    boolean ecartMaxi;
+    boolean equipeMixte;
     private Integer scoreEquipeA;
     private Integer scoreEquipeB;
     private final Integer numeroMatch;
 
-    boolean redondanceAdversaire;
     public Match(Integer indexMatch) {
         equipeA = new ArrayList<>();
         equipeB = new ArrayList<>();
         redondanceAdversaire = false;
         redondanceEquipier = false;
+        ecartMaxi = false;
+        equipeMixte = false;
         this.numeroMatch = indexMatch;
     }
 
@@ -47,6 +51,22 @@ public class Match implements Serializable {
         }else{
             return scoreEquipeB < scoreEquipeA;
         }
+    }
+
+    public boolean isRedondanceEquipier() {
+        return redondanceEquipier;
+    }
+
+    public boolean isRedondanceAdversaire() {
+        return redondanceAdversaire;
+    }
+
+    public boolean isEcartMaxi() {
+        return ecartMaxi;
+    }
+
+    public boolean isEquipeMixte() {
+        return equipeMixte;
     }
 
     public void setInitialScore() {
@@ -203,6 +223,7 @@ public class Match implements Serializable {
         boolean equipeAIsMixte = false;
         boolean equipeBIsMixte = false;
 
+        boolean retour;
         if (equipeA.size() == 1 && equipeB.size() == 2){
             if(equipeA.get(0).getSexe() != joueurAlea.getSexe())
                 equipeAIsMixte = true;
@@ -213,16 +234,43 @@ public class Match implements Serializable {
                 equipeAIsMixte = true;
             if(equipeB.get(0).getSexe() != equipeB.get(1).getSexe())
                 equipeBIsMixte = true;
-        }else{
-            return false;
         }
 
         if ((equipeAIsMixte == true && equipeBIsMixte == false) ||
                 (equipeAIsMixte == false && equipeBIsMixte == true)){
-            return true;
+            retour = true;
         }else{
-            return false;
+            retour = false;
         }
+
+        return retour;
+    }
+
+    public boolean ecartMaxi(Joueur joueurAlea) {
+        boolean equipeAIsMixte = false;
+        boolean equipeBIsMixte = false;
+
+        boolean retour;
+        if (equipeA.size() == 1 && equipeB.size() == 2){
+            if(equipeA.get(0).getSexe() != joueurAlea.getSexe())
+                equipeAIsMixte = true;
+            if(equipeB.get(0).getSexe() != equipeB.get(1).getSexe())
+                equipeBIsMixte = true;
+        }else if (equipeA.size() == 2 && equipeB.size() == 2){
+            if(equipeA.get(0).getSexe() != joueurAlea.getSexe())
+                equipeAIsMixte = true;
+            if(equipeB.get(0).getSexe() != equipeB.get(1).getSexe())
+                equipeBIsMixte = true;
+        }
+
+        if ((equipeAIsMixte == true && equipeBIsMixte == false) ||
+                (equipeAIsMixte == false && equipeBIsMixte == true)){
+            retour = true;
+        }else{
+            retour = false;
+        }
+
+        return retour;
     }
 
     public ArrayList<Joueur> getEquipeA() {

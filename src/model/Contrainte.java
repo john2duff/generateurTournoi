@@ -15,6 +15,7 @@ public class Contrainte implements Serializable {
     private String nom;
     private String description;
     private boolean actif;
+    private boolean visible;
     private String urlPhoto;
     public boolean isActif() {
         return actif;
@@ -23,12 +24,13 @@ public class Contrainte implements Serializable {
         this.actif = actif;
     }
 
-    public Contrainte(String nom, String description, boolean actif, TYPE_TOURNOI_CONTRAINTE typeTournoi, String url) {
+    public Contrainte(String nom, String description, boolean actif, boolean visible, TYPE_TOURNOI_CONTRAINTE typeTournoi, String url) {
         this.nom = nom;
         this.description = description;
         this.actif = actif;
         this.typeTournoi = typeTournoi;
         this.urlPhoto = url;
+        this.visible = visible;
     }
 
     public TYPE_TOURNOI_CONTRAINTE getTypeTournoi() {
@@ -50,7 +52,11 @@ public class Contrainte implements Serializable {
         this.description = description;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
 
-
-
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

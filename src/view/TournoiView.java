@@ -3,7 +3,10 @@ package view;
 import controler.Controler;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import model.Contrainte;
 import model.Tournoi;
+
+import java.util.ArrayList;
 
 public class TournoiView extends BorderPane {
 
@@ -42,5 +45,15 @@ public class TournoiView extends BorderPane {
         if (currentTournoi.getCurrentTour() != null){
             tab.getSelectionModel().select(currentTournoi.getCurrentTour());
         }
+    }
+
+    public ArrayList<Contrainte> getListContrainte(){
+        ArrayList<Contrainte> listContrainte = new ArrayList<>();
+        listContrainte.add(new Contrainte("Attente joueur", "", false, tournoiToolbar.getAttenteJoueur().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
+        listContrainte.add(new Contrainte("Redondance équipier", "", false, tournoiToolbar.getRedondanceEquipier().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
+        listContrainte.add(new Contrainte("Redondance adversaire", "", false, tournoiToolbar.getRedondanceAdversaire().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
+        listContrainte.add(new Contrainte("Equipe mixte", "", false, tournoiToolbar.getEquipeMixte().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
+        listContrainte.add(new Contrainte("Ecart maxi", "", false, tournoiToolbar.getEcartMaxi().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
+        return  listContrainte;
     }
 }

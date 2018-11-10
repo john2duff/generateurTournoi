@@ -11,9 +11,11 @@ import java.util.List;
 public class Tournoi implements Serializable {
 
     private String nomTournoi;
+
     public enum TypeTournoi {SIMPLE, DOUBLE;}
 
     private TypeTournoi typeTournoi;
+
     private Integer nombreTour;
     private Integer nombreTerrain;
     private Integer ecartMaxi;
@@ -30,7 +32,6 @@ public class Tournoi implements Serializable {
     private Integer pointDefaitePlus;
     public Boolean tournoiEnCours;
     public Tournoi() {}
-
     public Tournoi(String nomTournoi, TypeTournoi type, Integer nombreTour, Integer nombreTerrain) {
         this.nomTournoi = nomTournoi;
         this.typeTournoi = type;
@@ -111,15 +112,15 @@ public class Tournoi implements Serializable {
     public void loadContraintes(){
         listContraintes = new ArrayList<>();
         listContraintes.add(new Contrainte("Attente joueur", "On évite que les joueurs reste sur la touche pendant plusieurs tours.",
-                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-attente.png"));
+                true, false, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-attente.png"));
         listContraintes.add(new Contrainte("Redondance équipier", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois avec le même équipier dans le cas d'un match en double.",
-                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-equipier.png"));
+                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-equipier.png"));
         listContraintes.add(new Contrainte("Redondance adversaire", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois contre le même adversaire.",
-                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-adversaire.png"));
+                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-adversaire.png"));
         listContraintes.add(new Contrainte("Equipe mixte", "On ne permet pas qu'une équipe mixte puisse jouer avec une équipe non mixte.",
-                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-mixte.png"));
+                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-mixte.png"));
         listContraintes.add(new Contrainte("Ecart maxi", "On ne permet pas un écart de points de plus de X points entre les deux équipes.",
-                true, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/scoreboard.png"));
+                true,false, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/scoreboard.png"));
     }
 
     public Contrainte getContrainte(String nomContrainte){
@@ -138,6 +139,12 @@ public class Tournoi implements Serializable {
         this.tournoiEnCours = tournoiEnCours;
         if (tournoiEnCours == false){
             this.listTours = new ArrayList<Tour>();
+        }
+    }
+
+    public void changeContrainteShow(ArrayList<Contrainte> contrainteShow) {
+        for (int i = 0; i < contrainteShow.size(); i++){
+            getContrainte(contrainteShow.get(i).getNom()).setVisible(contrainteShow.get(i).isVisible());
         }
     }
 
@@ -300,6 +307,24 @@ public class Tournoi implements Serializable {
             this.listJoueurs.get(i).setNiveau(listJoueurs.get(i).getNiveau());
             this.listJoueurs.get(i).setSexe(listJoueurs.get(i).getSexe());
         }
+    }
+
+    public boolean contrainteIsVisible(String nomContrainte){
+        for (int i = 0; i < listContraintes.size(); i++){
+            if (listContraintes.get(i).getNom().equals(nomContrainte)){
+                return listContraintes.get(i).isVisible();
+            }
+        }
+        return false;
+    }
+
+    public boolean contrainteIsActif(String nomContrainte){
+        for (int i = 0; i < listContraintes.size(); i++){
+            if (listContraintes.get(i).getNom().equals(nomContrainte)){
+                return listContraintes.get(i).isActif();
+            }
+        }
+        return false;
     }
 
     public void enregistreConfig(Tournoi tournoi) {

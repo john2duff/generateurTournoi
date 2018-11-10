@@ -24,7 +24,7 @@ public class MainToolbar extends ToolBar {
         nouveau = new Button("Nouveau", ctrl.chargeImageView("/img/file.png"));
         nouveau.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                ctrl.nouveauTournoi();
+                ctrl.nouveauTournoi(false);
             }
         });
 

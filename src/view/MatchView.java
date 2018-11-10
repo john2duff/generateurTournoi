@@ -54,9 +54,17 @@ public class MatchView extends TitledPane {
         hJoueurEquipeA = createVueEquipe(match.getEquipeA(), false);
         hJoueurEquipeB = createVueEquipe(match.getEquipeB(), true);
 
+        VBox centre = new VBox();
+        HBox contrainte = new HBox();
+        if (match.isRedondanceAdversaire())contrainte.getChildren().add(new ImageView("/img/contrainte-adversaire.png"));
+        if (match.isRedondanceEquipier())contrainte.getChildren().add(new ImageView("/img/contrainte-equipier.png"));
+        if (match.isEquipeMixte())contrainte.getChildren().add(new ImageView("/img/contrainte-mixte.png"));
+        if (match.isEcartMaxi())contrainte.getChildren().add(new ImageView("/img/scoreboard.png"));
         ImageView volant = ctrl.chargeImageView("/img/main.png");
         volant.setFitHeight(30.0);
         volant.setFitWidth(30.0);
+        centre.setAlignment(Pos.CENTER);
+        centre.getChildren().addAll(contrainte, volant);
 
         if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()){
             scoreEquipeALabel = new Label(String.valueOf(match.getScoreEquipeA()));
@@ -65,7 +73,7 @@ public class MatchView extends TitledPane {
             scoreEquipeBLabel = new Label(String.valueOf(match.getScoreEquipeB()));
             scoreEquipeBLabel.setAlignment(Pos.CENTER);
             scoreEquipeBLabel.setStyle("-fx-max-width: 80; -fx-min-width: 80; -fx-font-size: 2em;");
-            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeALabel, volant, scoreEquipeBLabel, hJoueurEquipeB);
+            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeALabel, centre, scoreEquipeBLabel, hJoueurEquipeB);
         }else{
             scoreEquipeA = createScore(match.getScoreEquipeA(), tour.getNumeroTour(), true);
             scoreEquipeA.valueProperty().addListener(new ChangeListener<Integer>() {
@@ -83,7 +91,7 @@ public class MatchView extends TitledPane {
                     coloriseMatch();
                 }
             });
-            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeA, volant, scoreEquipeB, hJoueurEquipeB);
+            vMatch.getChildren().addAll(hJoueurEquipeA, scoreEquipeA, centre, scoreEquipeB, hJoueurEquipeB);
         }
 
         coloriseMatch();

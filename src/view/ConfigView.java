@@ -217,10 +217,10 @@ public class ConfigView extends BorderPane {
             hboxNiveau.setPadding(new Insets(5,5,5,5));
             hboxNiveau.setAlignment(Pos.CENTER_LEFT);
             Label lNomNiveau = new Label(Niveau.getNiveaux().get(i).getNomNiveau());
-            lNomNiveau.setStyle("-fx-min-width: 70;");
+            lNomNiveau.setStyle("-fx-min-width: 50;");
             if (!configToolBar.getModeEdition()){
                 Label avantage = new Label(Niveau.getNiveaux().get(i).getPointsToString());
-                avantage.setStyle("-fx-font-weight: bold;");
+                avantage.setStyle("-fx-font-weight: bold; -fx-min-width: 50;");
                 hboxNiveau.getChildren().addAll(lNomNiveau, avantage);
             }else{
                 avantageSpinner = new Spinner<>(minHandicap, maxAvantage, Niveau.getNiveaux().get(i).getPoints());
@@ -308,7 +308,7 @@ public class ConfigView extends BorderPane {
             Label lOrdreRegle = new Label(""+ (vboxRegle.getChildren().size()+1));
             lOrdreRegle.setStyle("-fx-min-width: 20;");
             Label lNomRegle = new Label(tournoi.getListContraintes().get(i).getNom());
-            lNomRegle.setStyle("-fx-min-width: 200;");
+            lNomRegle.setStyle("-fx-min-width: 200; -fx-text-alignment: center;");
             ImageView photo =  ctrl.chargeImageView(tournoi.getListContraintes().get(i).getUrlPhoto());
             photo.setFitHeight(30.0);
             photo.setFitWidth(30.0);
@@ -393,7 +393,7 @@ public class ConfigView extends BorderPane {
             }else{
                 description = (String)((Label)h.getChildren().get(6)).getText();
             }
-            Contrainte c = new Contrainte(nom, description, actif, ctrl.getCurrentTournoi().getContrainte(nom).getTypeTournoi(), ctrl.getCurrentTournoi().getContrainte(nom).getUrlPhoto());
+            Contrainte c = new Contrainte(nom, description, actif, false, ctrl.getCurrentTournoi().getContrainte(nom).getTypeTournoi(), ctrl.getCurrentTournoi().getContrainte(nom).getUrlPhoto());
             listContraintes.add(c);
         }
         tournoi.setListContraintes(listContraintes);

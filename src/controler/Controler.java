@@ -13,10 +13,12 @@ import model.*;
 import view.GeneralView;
 
 import java.io.*;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutorCompletionService;
 
 public class Controler {
 
@@ -51,7 +53,7 @@ public class Controler {
 
         primaryStage.getIcons().add(chargeImage("/img/main.png"));
 
-        nouveauTournoi();
+        nouveauTournoi(false);
         primaryStage.setTitle(currentTournoi.getNomTournoi());
 
         vueGeneral.refreshTournoi();
@@ -127,24 +129,35 @@ public class Controler {
         return new java.io.File("").getAbsolutePath();
     }
 
-    public void enregistreTournoi() {
-        if (!currentTournoi.getNomTournoi().equals("")) {
-                enregistreTournoi2(getCheminTournois(), currentTournoi.getNomTournoi());
-        } else {
-            updateInfo("Il faut mettre un nom au tournoi ");
+    public boolean enregistreTournoi() {
+        if (currentTournoi != null){
+            if (!currentTournoi.getNomTournoi().equals("")) {
+                return enregistreTournoi2(getCheminTournois(), currentTournoi.getNomTournoi());
+            } else {
+                updateInfo("Il faut mettre un nom au tournoi ");
+                return false;
+            }
+        }else{
+            return false;
         }
     }
 
-    public void enregistreTournoi2(String chemin, String nom) {
+    public boolean enregistreTournoi2(String chemin, String nom) {
         try {
             FileOutputStream fileOut = new FileOutputStream(chemin + "/" + nom + ".trn");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(currentTournoi);
             out.close();
             fileOut.close();
-            updateInfo("Tournoi enregistré ici : " + chemin + "/" + nom + ".trn");
-        } catch (IOException i) {
+            SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
+            SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+            Date currentTime = new Date();
+            updateEnregistrement("Enregistré à " + d.format(currentTime) + " - " + h.format(currentTime));
+            return true;
+        } catch (Exception i) {
             i.printStackTrace();
+            updateInfo("Impossible de renommer le tournoi !");
+            return false;
         }
     }
 
@@ -159,15 +172,15 @@ public class Controler {
             updateInfo("Tournoi ouvert");
             vueGeneral.ouvreTournoi();
             primaryStage.setTitle(currentTournoi.getNomTournoi());
-        } catch (IOException i) {
-            i.printStackTrace();
-            return;
-        } catch (ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
-            return;
+        }catch (Exception e){
+            SimpleDateFormat d = new SimpleDateFormat ("dd_MM_yyyy" );
+            SimpleDateFormat h = new SimpleDateFormat ("hh_mm_ss");
+            Date currentTime = new Date();
+            String nomTournoiOLD = "AncienTournoi-" + d.format(currentTime) + "-" + h.format(currentTime);
+            copier(new File (chemin),new File(getCheminTournois()+ "/" + nomTournoiOLD + ".trn"));
+            nouveauTournoi(true);
+            updateInfo("Le tournoi existant n'était pas compatible !");
         }
-
     }
 
     //si le fichier existe demande pour écraser sinon on renomme
@@ -193,20 +206,29 @@ public class Controler {
                     updateInfo("Renommage annulé");
                 }
             }else{
-                File source = new File(getCheminTournois()+ "/" + currentTournoi.getNomTournoi() + ".trn");
-                File destination = new File(getCheminTournois()+ "/" + result.get() + ".trn");
-                try{
-                    source.renameTo(destination);
-                    currentTournoi.setNomTournoi(result.get());
-                    enregistreTournoi();
+                renommerTournoi2(getCheminTournois()+ "/" + currentTournoi.getNomTournoi() + ".trn", getCheminTournois()+ "/" + result.get() + ".trn", result.get());
+                String save = currentTournoi.getNomTournoi();
+                currentTournoi.setNomTournoi(result.get());
+                if (enregistreTournoi()){
                     primaryStage.setTitle(currentTournoi.getNomTournoi());
-                }catch (Exception e){
-                    updateInfo("Impossible de mettre ce nom pour le tournoi");
+                }else{
+                    currentTournoi.setNomTournoi(save);
                 }
             }
 
         }
+    }
 
+    public boolean renommerTournoi2(String cheminAncien, String cheminNouveau, String nomTournoi){
+        File source = new File(cheminAncien);
+        File destination = new File(cheminNouveau);
+        try{
+            source.renameTo(destination);
+            return true;
+        }catch (Exception e){
+            updateInfo("Impossible de mettre ce nom pour le tournoi");
+            return false;
+        }
     }
 
     public static boolean copier(File source, File dest) {
@@ -227,6 +249,10 @@ public class Controler {
 
     public void updateInfo(String txt) {
         vueGeneral.getStatusBar().updateInfo(txt);
+    }
+
+    public void updateEnregistrement(String txt) {
+        vueGeneral.getStatusBar().updateEnregistrement(txt);
     }
 
     public ArrayList<Joueur> getListJoueurs () {
@@ -274,10 +300,6 @@ public class Controler {
     public void saveAutomatique(){
         if (saveAuto){
             enregistreTournoi();
-            SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
-            SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
-            Date currentTime = new Date();
-            updateInfo("Enregistré à " + d.format(currentTime) + " - " + h.format(currentTime));
             tournoiAEnregistrer = false;
         }else{
             tournoiAEnregistrer = true;
@@ -320,8 +342,8 @@ public class Controler {
     }
 
     //si nouveau existe alors on l'ouvre sinon on le créé
-    public void nouveauTournoi() {
-        if (tournoiExist(getCheminTournois() + "/" + nomNouveauTournoi)){
+    public void nouveauTournoi(boolean force) {
+        if (tournoiExist(getCheminTournois() + "/" + nomNouveauTournoi) && !force){
             ouvreTournoi(getCheminTournois() + "/" + nomNouveauTournoi);
             updateInfo(nomNouveauTournoi + " : existait déjà, il a donc été ouvert.");
         }else{
@@ -479,5 +501,11 @@ public class Controler {
         }else{
             return null;
         }
+    }
+
+    public void changeContrainteShow() {
+        currentTournoi.changeContrainteShow(vueGeneral.getContrainteShow());
+        saveAutomatique();
+        vueGeneral.refreshTournoiView();
     }
 }

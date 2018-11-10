@@ -1,9 +1,11 @@
 package view;
 
+import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
 import controler.Controler;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import model.Contrainte;
 import model.Joueur;
 import model.Tournoi;
 
@@ -113,5 +115,9 @@ public class GeneralView extends BorderPane {
 
     public void selectCurrentTabTour() {
         vueTournoi.selectCurrentTabTour();
+    }
+
+    public ArrayList<Contrainte> getContrainteShow() {
+        return vueTournoi.getListContrainte();
     }
 }
