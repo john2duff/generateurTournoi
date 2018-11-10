@@ -8,11 +8,21 @@ public class Tour implements Serializable {
     private ArrayList<Match> listMatchs;
     private ArrayList<Joueur> joueurRestant;
     private final Integer numeroTour;
+    public Boolean alerteJoueurAttente;
 
     public Tour(Integer indexTour) {
         this.listMatchs = new ArrayList<>();
         this.joueurRestant = new ArrayList<>();
         this.numeroTour = indexTour;
+        this.alerteJoueurAttente = false;
+    }
+
+    public void setAlerteJoueurAttente(Boolean alerteJoueurAttente) {
+        this.alerteJoueurAttente = alerteJoueurAttente;
+    }
+
+    public Boolean getAlerteJoueurAttente() {
+        return alerteJoueurAttente;
     }
 
     public Integer getNumeroTour() {

@@ -7,11 +7,7 @@ import java.util.ArrayList;
 
 public class Contrainte implements Serializable {
 
-
-    public enum TYPE_TOURNOI_CONTRAINTE {SIMPLE, DOUBLE, BOTH;};
-
-    private TYPE_TOURNOI_CONTRAINTE typeTournoi;
-
+    private Tournoi.TypeTournoi typeTournoi;
     private String nom;
     private String description;
     private boolean actif;
@@ -24,7 +20,7 @@ public class Contrainte implements Serializable {
         this.actif = actif;
     }
 
-    public Contrainte(String nom, String description, boolean actif, boolean visible, TYPE_TOURNOI_CONTRAINTE typeTournoi, String url) {
+    public Contrainte(String nom, String description, boolean actif, boolean visible, Tournoi.TypeTournoi typeTournoi, String url) {
         this.nom = nom;
         this.description = description;
         this.actif = actif;
@@ -33,7 +29,7 @@ public class Contrainte implements Serializable {
         this.visible = visible;
     }
 
-    public TYPE_TOURNOI_CONTRAINTE getTypeTournoi() {
+    public Tournoi.TypeTournoi getTypeTournoi() {
         return typeTournoi;
     }
 

@@ -3,8 +3,8 @@
 }
 
 .joueurItem{
-    -fx-border-color: rgba(240, 240, 240, 0.5);
-    -fx-background-color: rgba(240, 240, 240, 0.5);
+    -fx-border-color: rgba(220, 220, 220, 1);
+    -fx-background-color: rgba(220, 220, 220, 1);
     -fx-font-size: 1.2em;
 }
 

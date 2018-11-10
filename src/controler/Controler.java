@@ -504,8 +504,10 @@ public class Controler {
     }
 
     public void changeContrainteShow() {
+        Integer numTourAfficher = vueGeneral.getNumeroTourAffiche();
         currentTournoi.changeContrainteShow(vueGeneral.getContrainteShow());
         saveAutomatique();
         vueGeneral.refreshTournoiView();
+        vueGeneral.afficheTabTour(numTourAfficher);
     }
 }

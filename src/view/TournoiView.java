@@ -27,6 +27,10 @@ public class TournoiView extends BorderPane {
         setCenter(tab);
     }
 
+    public Integer getTabTourAffiche(){
+        return tab.getSelectionModel().getSelectedIndex();
+    }
+
     public void refreshTournoi() {
         this.currentTournoi = ctrl.getCurrentTournoi();
         tab.getTabs().clear();
@@ -47,13 +51,11 @@ public class TournoiView extends BorderPane {
         }
     }
 
-    public ArrayList<Contrainte> getListContrainte(){
-        ArrayList<Contrainte> listContrainte = new ArrayList<>();
-        listContrainte.add(new Contrainte("Attente joueur", "", false, tournoiToolbar.getAttenteJoueur().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
-        listContrainte.add(new Contrainte("Redondance équipier", "", false, tournoiToolbar.getRedondanceEquipier().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
-        listContrainte.add(new Contrainte("Redondance adversaire", "", false, tournoiToolbar.getRedondanceAdversaire().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
-        listContrainte.add(new Contrainte("Equipe mixte", "", false, tournoiToolbar.getEquipeMixte().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
-        listContrainte.add(new Contrainte("Ecart maxi", "", false, tournoiToolbar.getEcartMaxi().isSelected(), Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, null));
-        return  listContrainte;
+    public boolean getShowContrainte(){
+        return tournoiToolbar.showContrainteIsSelected();
+    }
+
+    public void afficheTabTour(Integer numTourAfficher) {
+        tab.getSelectionModel().select(numTourAfficher);
     }
 }

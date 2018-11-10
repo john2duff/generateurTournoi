@@ -12,11 +12,12 @@ public class Tournoi implements Serializable {
 
     private String nomTournoi;
 
-    public enum TypeTournoi {SIMPLE, DOUBLE;}
+    public enum TypeTournoi {SIMPLE, DOUBLE, BOTH}
 
     private TypeTournoi typeTournoi;
 
     private Integer nombreTour;
+
     private Integer nombreTerrain;
     private Integer ecartMaxi;
     private Integer currentTour;
@@ -31,6 +32,7 @@ public class Tournoi implements Serializable {
     private Integer pointDefaite;
     private Integer pointDefaitePlus;
     public Boolean tournoiEnCours;
+    public Boolean showContrainte;
     public Tournoi() {}
     public Tournoi(String nomTournoi, TypeTournoi type, Integer nombreTour, Integer nombreTerrain) {
         this.nomTournoi = nomTournoi;
@@ -46,9 +48,9 @@ public class Tournoi implements Serializable {
         this.pointDefaite = 1;
         this.ecartMaxi = 10;
         this.tournoiEnCours = false;
+        this.showContrainte = false;
         loadContraintes();
     }
-
     public void actualiserPoints(){
         initScoreJoueurs();
         for (int i = 0; i < listTours.size(); i++){
@@ -91,6 +93,9 @@ public class Tournoi implements Serializable {
         return currentTour >= tour.getNumeroTour();
     }
 
+    public boolean isShowContrainte() {
+        return showContrainte;
+    }
 
     public void clotureTour() {
         if (currentTour < listTours.size()-1){
@@ -112,15 +117,15 @@ public class Tournoi implements Serializable {
     public void loadContraintes(){
         listContraintes = new ArrayList<>();
         listContraintes.add(new Contrainte("Attente joueur", "On évite que les joueurs reste sur la touche pendant plusieurs tours.",
-                true, false, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-attente.png"));
+                true, false, TypeTournoi.BOTH, "/img/contrainte-attente.png"));
         listContraintes.add(new Contrainte("Redondance équipier", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois avec le même équipier dans le cas d'un match en double.",
-                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-equipier.png"));
+                true, false, TypeTournoi.DOUBLE, "/img/contrainte-equipier.png"));
         listContraintes.add(new Contrainte("Redondance adversaire", "Le tirage au sort des équipe évite que l'on rejoue plusieurs fois contre le même adversaire.",
-                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/contrainte-adversaire.png"));
+                true, false, TypeTournoi.BOTH, "/img/contrainte-adversaire.png"));
         listContraintes.add(new Contrainte("Equipe mixte", "On ne permet pas qu'une équipe mixte puisse jouer avec une équipe non mixte.",
-                true, false,Contrainte.TYPE_TOURNOI_CONTRAINTE.DOUBLE, "/img/contrainte-mixte.png"));
+                true, false, TypeTournoi.DOUBLE, "/img/contrainte-mixte.png"));
         listContraintes.add(new Contrainte("Ecart maxi", "On ne permet pas un écart de points de plus de X points entre les deux équipes.",
-                true,false, Contrainte.TYPE_TOURNOI_CONTRAINTE.BOTH, "/img/scoreboard.png"));
+                true,false, TypeTournoi.BOTH, "/img/scoreboard.png"));
     }
 
     public Contrainte getContrainte(String nomContrainte){
@@ -142,10 +147,8 @@ public class Tournoi implements Serializable {
         }
     }
 
-    public void changeContrainteShow(ArrayList<Contrainte> contrainteShow) {
-        for (int i = 0; i < contrainteShow.size(); i++){
-            getContrainte(contrainteShow.get(i).getNom()).setVisible(contrainteShow.get(i).isVisible());
-        }
+    public void changeContrainteShow(boolean contrainteShow) {
+        showContrainte = contrainteShow;
     }
 
     public Integer getCurrentTour() {
@@ -446,18 +449,18 @@ public class Tournoi implements Serializable {
             for (int i = 0; i < nombreTour ; i++){
                 Tour tour = new Tour(i);
                 listJoueursAttribues = new ArrayList<Joueur>();
-                mettreJoueurDansSac();
+                mettreJoueurDansSac(false);
                 Integer compt = 0;
                 do {
                     Match match = new Match(compt);
                     //equipe A joueur 1
-                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_A);
+                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_A, tour, getContrainte("Attente joueur").isActif());
                         if (joueurTireAuSort != null){
                             match.ajouteJoueurEquipe(joueurTireAuSort, Match.Equipe.EQUIPE_A);
                             listJoueursAttribues.add(joueurTireAuSort);
                         }
                     //equipe B joueur 1
-                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_B);
+                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_B, tour, getContrainte("Attente joueur").isActif());
                         if (joueurTireAuSort != null) {
                             match.ajouteJoueurEquipe(joueurTireAuSort, Match.Equipe.EQUIPE_B);
                             listJoueursAttribues.add(joueurTireAuSort);
@@ -465,13 +468,13 @@ public class Tournoi implements Serializable {
 
                     if (typeTournoi == TypeTournoi.DOUBLE){
                         //equipe A joueur 2
-                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_A);
+                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_A, tour, getContrainte("Attente joueur").isActif());
                         if (joueurTireAuSort != null){
                             match.ajouteJoueurEquipe(joueurTireAuSort, Match.Equipe.EQUIPE_A);
                             listJoueursAttribues.add(joueurTireAuSort);
                         }
                         //equipe B joueur 2
-                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_B);
+                        joueurTireAuSort = tireAuSort(match, getLastContrainte(), Match.Equipe.EQUIPE_B, tour, getContrainte("Attente joueur").isActif());
                         if (joueurTireAuSort != null) {
                             match.ajouteJoueurEquipe(joueurTireAuSort, Match.Equipe.EQUIPE_B);
                             listJoueursAttribues.add(joueurTireAuSort);
@@ -480,12 +483,16 @@ public class Tournoi implements Serializable {
                     match.setInitialScore();
                     if (match.getEquipeA().size() > 0)
                         tour.ajouteMatch(match);
-                    mettreJoueurDansSac();
+                    mettreJoueurDansSac(false);
                     compt++;
                 } while (terrainRestant(tour) && !sacVide() && getNbreJoueurSuffisantDansSac());
                 tour.setJoueurRestant(sac);
                 for (int m = 0; m < sac.size(); m++){
-                    listJoueursAttente.add(sac.get(m));
+                    if (listJoueursAttente.contains(sac.get(m))){
+                        tour.setAlerteJoueurAttente(true);
+                    }else{
+                        listJoueursAttente.add(sac.get(m));
+                    }
                 }
                 listTours.add(tour);
             }
@@ -520,9 +527,9 @@ public class Tournoi implements Serializable {
         return tour.getListMatchs().size() < nombreTerrain;
     }
 
-    public Joueur tireAuSort(Match match, Integer contrainteIgnore, Match.Equipe equipe){
+    public Joueur tireAuSort(Match match, Integer contrainteIgnore, Match.Equipe equipe, Tour tour, boolean contrainteAttente){
         int alea;
-        mettreJoueurDansSac();
+        mettreJoueurDansSac(contrainteAttente);
         while (!sacVide()) {
             alea = (int) (Math.random() * sac.size());
             Joueur joueurAlea = sac.get(alea);
@@ -532,8 +539,11 @@ public class Tournoi implements Serializable {
                 return joueurAlea;
             }
         }
+        if (contrainteAttente){
+            return tireAuSort(match, getLastContrainte(), equipe, tour, false);
+        }
         if (contrainteIgnore == 0 ){
-            mettreJoueurDansSac();
+            mettreJoueurDansSac(false);
             if (sac.size() == 0){
                 return null;
             }else{
@@ -542,9 +552,10 @@ public class Tournoi implements Serializable {
             }
         }else{
             contrainteIgnore --;
-            return tireAuSort(match, contrainteIgnore, equipe);
+            return tireAuSort(match, contrainteIgnore, equipe, tour, false);
         }
     }
+
 
     private boolean contrainteBloquante(Match match, Joueur joueurAlea, Integer contrainteIgnore, Match.Equipe equipe) {
         for (int i = contrainteIgnore; i >= 0 ; i--){
@@ -568,7 +579,8 @@ public class Tournoi implements Serializable {
                 //TODO
                 return false;
             case "Attente joueur":
-                return !listJoueursAttente.contains(joueurAlea);
+                //gérer précedemment
+                return false;
             default:
                 System.out.println("Contrainte inconnu");
                 return false;
@@ -591,13 +603,19 @@ public class Tournoi implements Serializable {
         }
     }
 
-    public void mettreJoueurDansSac(){
+    public void mettreJoueurDansSac(boolean enAttente){
         sac = new ArrayList<Joueur>();
-        for (int i = 0; i < listJoueurs.size() ; i++){
-            if (listJoueurs.get(i).isActif() && !listJoueursAttribues.contains(listJoueurs.get(i)))
-                sac.add(listJoueurs.get(i));
+        if (!enAttente || listJoueursAttente.size() == 0){
+            for (int i = 0; i < listJoueurs.size() ; i++){
+                if (listJoueurs.get(i).isActif() && !listJoueursAttribues.contains(listJoueurs.get(i)))
+                    sac.add(listJoueurs.get(i));
+            }
+        }else{
+            for (int i = 0; i < listJoueursAttente.size() ; i++){
+                if (!listJoueursAttribues.contains(listJoueursAttente.get(i)))
+                    sac.add(listJoueursAttente.get(i));
+            }
         }
     }
-
 
 }

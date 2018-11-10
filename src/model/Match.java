@@ -247,30 +247,7 @@ public class Match implements Serializable {
     }
 
     public boolean ecartMaxi(Joueur joueurAlea) {
-        boolean equipeAIsMixte = false;
-        boolean equipeBIsMixte = false;
-
-        boolean retour;
-        if (equipeA.size() == 1 && equipeB.size() == 2){
-            if(equipeA.get(0).getSexe() != joueurAlea.getSexe())
-                equipeAIsMixte = true;
-            if(equipeB.get(0).getSexe() != equipeB.get(1).getSexe())
-                equipeBIsMixte = true;
-        }else if (equipeA.size() == 2 && equipeB.size() == 2){
-            if(equipeA.get(0).getSexe() != joueurAlea.getSexe())
-                equipeAIsMixte = true;
-            if(equipeB.get(0).getSexe() != equipeB.get(1).getSexe())
-                equipeBIsMixte = true;
-        }
-
-        if ((equipeAIsMixte == true && equipeBIsMixte == false) ||
-                (equipeAIsMixte == false && equipeBIsMixte == true)){
-            retour = true;
-        }else{
-            retour = false;
-        }
-
-        return retour;
+        return false;
     }
 
     public ArrayList<Joueur> getEquipeA() {

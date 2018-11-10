@@ -2,6 +2,7 @@ package view;
 
 import controler.Controler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -17,7 +18,7 @@ public class JoueurView extends BorderPane {
     private final ScrollPane container;
     private Controler ctrl;
     private JoueurToolbar joueurToolbar;
-    private VBox vboxJoueur = new VBox();
+    private FlowPane vboxJoueur = new FlowPane();
 
     public JoueurView(Controler ctrl) {
 
@@ -32,7 +33,9 @@ public class JoueurView extends BorderPane {
         container = new ScrollPane();
         container.setPadding(new Insets(5,5,5,5));
         container.setContent(vboxJoueur);
-        vboxJoueur.setSpacing(5);
+        vboxJoueur.setHgap(5);
+        vboxJoueur.setVgap(5);
+        vboxJoueur.setAlignment(Pos.TOP_LEFT);
         container.setFitToWidth(true);
 
         setCenter(container);

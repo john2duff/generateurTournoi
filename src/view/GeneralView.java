@@ -117,7 +117,15 @@ public class GeneralView extends BorderPane {
         vueTournoi.selectCurrentTabTour();
     }
 
-    public ArrayList<Contrainte> getContrainteShow() {
-        return vueTournoi.getListContrainte();
+    public boolean getContrainteShow() {
+        return vueTournoi.getShowContrainte();
+    }
+
+    public Integer getNumeroTourAffiche() {
+        return vueTournoi.getTabTourAffiche();
+    }
+
+    public void afficheTabTour(Integer numTourAfficher) {
+        vueTournoi.afficheTabTour(numTourAfficher);
     }
 }

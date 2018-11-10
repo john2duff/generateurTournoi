@@ -29,6 +29,7 @@ public class MatchView extends TitledPane {
 
     private final int minScore = -40;
     private final int maxScore = 40;
+    private final HBox vMatch;
     private Spinner<Integer> scoreEquipeA;
     private Spinner<Integer> scoreEquipeB;
     private Label scoreEquipeALabel;
@@ -41,7 +42,7 @@ public class MatchView extends TitledPane {
         this.match = match;
         this.tour = tour;
         setText("Match " + (match.getNumeroMatch()+1));
-        HBox vMatch = new HBox();
+        vMatch = new HBox();
         vMatch.setAlignment(Pos.CENTER);
         vMatch.setSpacing(10);
 
@@ -64,7 +65,13 @@ public class MatchView extends TitledPane {
         volant.setFitHeight(30.0);
         volant.setFitWidth(30.0);
         centre.setAlignment(Pos.CENTER);
-        centre.getChildren().addAll(contrainte, volant);
+        if (!ctrl.tournoiEnCours()) {
+            centre.getChildren().addAll(volant);
+        }else if (ctrl.getCurrentTournoi().isShowContrainte()){
+            centre.getChildren().addAll(contrainte, volant);
+        }else{
+            centre.getChildren().addAll(volant);
+        }
 
         if (ctrl.getCurrentTour() == null || tour.getNumeroTour() < ctrl.getCurrentTour()){
             scoreEquipeALabel = new Label(String.valueOf(match.getScoreEquipeA()));
@@ -100,6 +107,8 @@ public class MatchView extends TitledPane {
 
     private void coloriseMatch() {
         if((match.getScoreEquipeA() >= 21 || match.getScoreEquipeB() >= 21) && Math.abs(match.getScoreEquipeA() - match.getScoreEquipeB()) >= 2){
+            vMatch.setStyle("-fx-background-color: rgb(196,196,196);");
+
             if (match.getScoreEquipeA() > match.getScoreEquipeB()){
                 hJoueurEquipeA.setStyle("-fx-background-color: rgb(190,229,90); -fx-border-radius: 50px;");
                 hJoueurEquipeB.setStyle("-fx-background-color: rgb(244,154,154);-fx-border-radius: 50px;");
@@ -107,9 +116,39 @@ public class MatchView extends TitledPane {
                 hJoueurEquipeA.setStyle("-fx-background-color: rgb(244,154,154);-fx-border-radius: 50px;");
                 hJoueurEquipeB.setStyle("-fx-background-color: rgb(190,229,90);-fx-border-radius: 50px;");
             }
+            for (int i = 0; i < match.getEquipeA().size(); i++){
+                if (match.getEquipeA().get(i).getSexe() == Joueur.Sexe.HOMME){
+                    hJoueurEquipeA.getChildren().get(i).setStyle("-fx-background-color: none;");
+                }else{
+                    hJoueurEquipeA.getChildren().get(i).setStyle("-fx-background-color: none;");
+                }
+            }
+            for (int i = 0; i < match.getEquipeB().size(); i++){
+                if (match.getEquipeB().get(i).getSexe() == Joueur.Sexe.HOMME){
+                    hJoueurEquipeB.getChildren().get(i).setStyle("-fx-background-color: none;");
+                }else{
+                    hJoueurEquipeB.getChildren().get(i).setStyle("-fx-background-color: none;");
+                }
+            }
         }else{
-            hJoueurEquipeA.setStyle("-fx-background-color: none;-fx-border-radius: 50px;");
-            hJoueurEquipeB.setStyle("-fx-background-color: none;-fx-border-radius: 50px;");
+            vMatch.setStyle("-fx-background-color: none;");
+
+            for (int i = 0; i < match.getEquipeA().size(); i++){
+                if (match.getEquipeA().get(i).getSexe() == Joueur.Sexe.HOMME){
+                    hJoueurEquipeA.getChildren().get(i).setStyle("-fx-background-color: rgba(102, 153, 255, 0.5);");
+                }else{
+                    hJoueurEquipeA.getChildren().get(i).setStyle("-fx-background-color: rgba(255, 153, 204, 0.5);");
+                }
+            }
+            for (int i = 0; i < match.getEquipeB().size(); i++){
+                if (match.getEquipeB().get(i).getSexe() == Joueur.Sexe.HOMME){
+                    hJoueurEquipeB.getChildren().get(i).setStyle("-fx-background-color: rgba(102, 153, 255, 0.5);");
+                }else{
+                    hJoueurEquipeB.getChildren().get(i).setStyle("-fx-background-color: rgba(255, 153, 204, 0.5);");
+                }
+            }
+            hJoueurEquipeA.setStyle("-fx-background-color: none;");
+            hJoueurEquipeB.setStyle("-fx-background-color: none;");
         }
     }
 
@@ -119,6 +158,7 @@ public class MatchView extends TitledPane {
         vboxEquipe.setPadding(new Insets(10, 10, 10, 10));
         for (int k = 0; k < equipe.size(); k++){
             HBox hEquipe = new HBox();
+            hEquipe.setPadding(new Insets(10, 10, 10, 10));
             Joueur joueur = equipe.get(k);
             hEquipe.setAlignment(Pos.CENTER_LEFT);
             hEquipe.setSpacing(10);

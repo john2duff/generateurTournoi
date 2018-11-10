@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import model.Joueur;
 import model.Niveau;
 
@@ -35,6 +36,7 @@ public class JoueurCellFactory extends HBox {
     public JoueurCellFactory(boolean modeEdition, Joueur j, Controler ctrl, Integer index) {
         this.ctrl = ctrl;
         photo = ctrl.chargePhoto(j);
+        getChildren().clear();
         if (!modeEdition){
             //datas
             actif.setSelected(j.getActif());
@@ -44,14 +46,18 @@ public class JoueurCellFactory extends HBox {
                     ctrl.selectionJoueur(((CheckBox)e.getSource()).getId(), ((CheckBox)e.getSource()).isSelected());
                 }
             });
+            VBox nomPrenom = new VBox();
             prenom.setText(j.getPrenom());
             nom.setText(j.getNom());
+            nomPrenom.setSpacing(5);
+            nomPrenom.setFillWidth(true);
+            nomPrenom.getChildren().addAll(prenom, nom);
             niveau.setText(j.getNiveau().getNomNiveau());
             points.setText(j.getPoints().toString());
             if (!ctrl.tournoiEnCours()){
-                getChildren().setAll(actif, photo, prenom, nom, niveau);
+                getChildren().addAll(actif, photo, nomPrenom, niveau);
             }else{
-                getChildren().setAll(photo, prenom, nom, niveau, points);
+                getChildren().addAll(photo, nomPrenom, niveau, points);
             }
             setId(index.toString());
             setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -108,8 +114,10 @@ public class JoueurCellFactory extends HBox {
         }
         actif.setStyle("-fx-min-width: 30; -fx-padding: 10;");
         prenom.setStyle("-fx-min-width: 100;");
+        prenom.setAlignment(Pos.CENTER);
         prenomEdition.setStyle("-fx-min-width: 100;");
         nom.setStyle("-fx-min-width: 100;");
+        nom.setAlignment(Pos.CENTER);
         nomEdition.setStyle("-fx-min-width: 100;");
         sexeEdition.setStyle("-fx-min-width: 100;");
         niveau.setStyle("-fx-min-width: 70;");
