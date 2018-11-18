@@ -24,6 +24,7 @@ public class JoueurCellFactory extends HBox {
     private final Label nom = new Label();
     private final Label niveau = new Label();
     private final Label points = new Label();
+    private final Label classement = new Label();
 
     private final TextField nomEdition = new TextField();
     private final TextField prenomEdition = new TextField();
@@ -51,13 +52,23 @@ public class JoueurCellFactory extends HBox {
             nom.setText(j.getNom());
             nomPrenom.setSpacing(5);
             nomPrenom.setFillWidth(true);
-            nomPrenom.getChildren().addAll(prenom, nom);
+            if(prenom.getText().equals("") && nom.getText().equals("")){
+                nomPrenom.getChildren().addAll(prenom);
+            }else if(prenom.getText().equals("")){
+                nomPrenom.getChildren().addAll(nom);
+            }else if(nom.getText().equals("")){
+                nomPrenom.getChildren().addAll(prenom);
+            }else {
+                nomPrenom.getChildren().addAll(prenom, nom);
+            }
+            nomPrenom.setAlignment(Pos.CENTER);
             niveau.setText(j.getNiveau().getNomNiveau());
             points.setText(j.getPoints().toString());
             if (!ctrl.tournoiEnCours()){
                 getChildren().addAll(actif, photo, nomPrenom, niveau);
             }else{
-                getChildren().addAll(photo, nomPrenom, niveau, points);
+                classement.setText(String.valueOf(index+1));
+                getChildren().addAll(classement, photo, nomPrenom, niveau, points);
             }
             setId(index.toString());
             setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -122,6 +133,10 @@ public class JoueurCellFactory extends HBox {
         sexeEdition.setStyle("-fx-min-width: 100;");
         niveau.setStyle("-fx-min-width: 70;");
         niveauEdition.setStyle("-fx-min-width: 70;");
+        points.setStyle("-fx-min-width: 70;");
+        points.setAlignment(Pos.CENTER);
+        classement.setStyle("-fx-min-width: 50; -fx-font-weight: bold;");
+        classement.setAlignment(Pos.CENTER);
         setPadding(new Insets(5,5,5,5));
         setSpacing(5);
         setAlignment(Pos.CENTER_LEFT);

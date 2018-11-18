@@ -126,11 +126,12 @@ public class ConfigView extends BorderPane {
         hboxTypeTournoi.setPadding(new Insets(5,5,5,5));
         hboxTypeTournoi.setAlignment(Pos.CENTER_LEFT);
         Label lTypeTournoi = new Label("Type de tournoi");
+        lTypeTournoi.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxTypeTournoi.setPrefWidth(200d);
             Label typeTournoi = new Label(tournoi.getTypeTournoiToString());
             typeTournoi.setAlignment(Pos.CENTER);
-            typeTournoi.setStyle("-fx-font-weight: bold;");
+            typeTournoi.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxTypeTournoi.getChildren().addAll(lTypeTournoi, typeTournoi);
         }else{
             hboxTypeTournoi.setPrefWidth(300d);
@@ -154,11 +155,12 @@ public class ConfigView extends BorderPane {
         hboxNombreTerrain.setPadding(new Insets(5,5,5,5));
         hboxNombreTerrain.setAlignment(Pos.CENTER_LEFT);
         Label lNombreTerrain = new Label("Nombre de terrain");
+        lNombreTerrain.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxNombreTerrain.setPrefWidth(200d);
             Label nombreTerrain = new Label(tournoi.getNombreTerrainToString());
             nombreTerrain.setAlignment(Pos.CENTER);
-            nombreTerrain.setStyle("-fx-font-weight: bold;");
+            nombreTerrain.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxNombreTerrain.getChildren().addAll(lNombreTerrain, nombreTerrain);
         }else{
             hboxNombreTerrain.setPrefWidth(300d);
@@ -175,11 +177,12 @@ public class ConfigView extends BorderPane {
         hboxNombreTour.setPadding(new Insets(5,5,5,5));
         hboxNombreTour.setAlignment(Pos.CENTER_LEFT);
         Label lNombreTour = new Label("Nombre de tour");
+        lNombreTour.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxNombreTour.setPrefWidth(200d);
             Label nombreTour = new Label(tournoi.getNombreTourToString());
             nombreTour.setAlignment(Pos.CENTER);
-            nombreTour.setStyle("-fx-font-weight: bold;");
+            nombreTour.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxNombreTour.getChildren().addAll(lNombreTour, nombreTour);
         }else{
             hboxNombreTour.setPrefWidth(300d);
@@ -195,14 +198,12 @@ public class ConfigView extends BorderPane {
 
     public void refreshAttributionPoint (Tournoi tournoi){
         vboxAvantage.getChildren().clear();
-        int col = 0;
-        int lig = 0;
         for (int i = 0; i < Niveau.getNiveaux().size(); i++){
             HBox hboxNiveau = new HBox();
             hboxNiveau.setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: gray;");
             hboxNiveau.setPadding(new Insets(5,5,5,5));
-            hboxNiveau.setAlignment(Pos.CENTER);
-            hboxNiveau.setSpacing(10);
+            hboxNiveau.setAlignment(Pos.CENTER_LEFT);
+            hboxNiveau.setSpacing(15);
             Label lNomNiveau = new Label(Niveau.getNiveaux().get(i).getNomNiveau());
             if (!configToolBar.getModeEdition()){
                 hboxNiveau.setPrefWidth(100d);
@@ -217,51 +218,47 @@ public class ConfigView extends BorderPane {
                 avantageSpinner.setStyle("-fx-pref-width: 80;");
                 hboxNiveau.getChildren().addAll(lNomNiveau, avantageSpinner);
             }
-            GridPane.setConstraints(hboxNiveau, col, lig);
             vboxAvantage.getChildren().add(hboxNiveau);
-            if (col == 2){
-                col = 0;
-                lig++;
-            }else{
-                col++;
-            }
-
         }
 
         vboxComptagePoint.getChildren().clear();
         HBox hboxVictoire = new HBox();
         hboxVictoire.setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: gray;");
         hboxVictoire.setPadding(new Insets(5,5,5,5));
-        hboxVictoire.setAlignment(Pos.CENTER);
+        hboxVictoire.setAlignment(Pos.CENTER_LEFT);
+        hboxVictoire.setSpacing(15);
         Label lVictoire = new Label("Victoire");
+        lVictoire.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxVictoire.setPrefWidth(200d);
             Label victoire = new Label(tournoi.getVictoireToString());
             victoire.setAlignment(Pos.CENTER);
-            victoire.setStyle("-fx-font-weight: bold;-fx-min-width: 50;");
+            victoire.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxVictoire.getChildren().addAll(lVictoire, victoire);
         }else{
-            hboxVictoire.setPrefWidth(200d);
+            hboxVictoire.setPrefWidth(300d);
             victoireSpinner = new Spinner<>(minPointVictoire, maxPointVictoire, tournoi.getVictoire());
             victoireSpinner.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_RIGHT_HORIZONTAL);
             victoireSpinner.setStyle("-fx-pref-width: 80;");
             hboxVictoire.getChildren().addAll(lVictoire, victoireSpinner );
         }
-        GridPane.setConstraints(hboxVictoire, 0, 0);
+        //GridPane.setConstraints(hboxVictoire, 0, 0);
 
         HBox hboxDefaitePlus = new HBox();
         hboxDefaitePlus.setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: gray;");
         hboxDefaitePlus.setPadding(new Insets(5,5,5,5));
         hboxDefaitePlus.setAlignment(Pos.CENTER_LEFT);
+        hboxDefaitePlus.setSpacing(15);
         Label lDefaitePlus = new Label("DefaitePlus");
+        lDefaitePlus.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxDefaitePlus.setPrefWidth(200d);
             Label defaitePlus = new Label(tournoi.getDefaitePlusToString());
             defaitePlus.setAlignment(Pos.CENTER);
-            defaitePlus.setStyle("-fx-font-weight: bold;-fx-min-width: 50;");
+            defaitePlus.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxDefaitePlus.getChildren().addAll(lDefaitePlus, defaitePlus);
         }else{
-            hboxDefaitePlus.setPrefWidth(200d);
+            hboxDefaitePlus.setPrefWidth(300d);
             defaitePlusSpinner = new Spinner<>(minPointDefaitePlus, maxPointDefaitePlus, tournoi.getDefaitePlus());
             defaitePlusSpinner.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_RIGHT_HORIZONTAL);
             defaitePlusSpinner.setStyle("-fx-pref-width: 80;");
@@ -273,15 +270,17 @@ public class ConfigView extends BorderPane {
         hboxDefaite.setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: gray;");
         hboxDefaite.setPadding(new Insets(5,5,5,5));
         hboxDefaite.setAlignment(Pos.CENTER_LEFT);
+        hboxDefaite.setSpacing(15);
         Label lDefaite = new Label("Defaite");
+        lDefaite.setStyle("-fx-min-width: 120;");
         if (!configToolBar.getModeEdition()){
             hboxDefaite.setPrefWidth(200d);
             Label defaite = new Label(tournoi.getDefaiteToString());
             defaite.setAlignment(Pos.CENTER);
-            defaite.setStyle("-fx-font-weight: bold;-fx-min-width: 50;");
+            defaite.setStyle("-fx-font-weight: bold;-fx-min-width: 80;");
             hboxDefaite.getChildren().addAll(lDefaite, defaite);
         }else{
-            hboxDefaite.setPrefWidth(200d);
+            hboxDefaite.setPrefWidth(300d);
             defaiteSpinner = new Spinner<>(minPointDefaite, maxPointDefaite, tournoi.getDefaite());
             defaiteSpinner.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_RIGHT_HORIZONTAL);
             defaiteSpinner.setStyle("-fx-pref-width: 80;");

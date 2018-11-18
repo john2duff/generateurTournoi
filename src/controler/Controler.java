@@ -264,6 +264,7 @@ public class Controler {
     public void modeEditionJoueurChange(boolean modeEdition) {
         if (!modeEdition)
             currentTournoi.enregistreListJoueur(vueGeneral.getListJoueurs());
+        currentTournoi.trier();
         vueGeneral.refreshJoueurView();
         vueGeneral.refreshConfigView();
         saveAutomatique();
@@ -417,6 +418,7 @@ public class Controler {
         }else{
             updateInfo("Nombre de joueurs insuffisant pour générer un tournoi !");
         }
+        saveAutomatique();
     }
 
     public String getTailleTexte() {
@@ -442,10 +444,6 @@ public class Controler {
             updateInfo("Un tournoi est en cours, veuillez arrêter le tournoi avant de sélectionner des joueurs !");
         }
         saveAutomatique();
-    }
-
-    public boolean tourIsCloture(Tour tour) {
-        return tour.getNumeroTour() < currentTournoi.getCurrentTour();
     }
 
     public void clotureTour() {

@@ -246,8 +246,19 @@ public class Match implements Serializable {
         return retour;
     }
 
-    public boolean ecartMaxi(Joueur joueurAlea) {
-        return false;
+    public boolean ecartMaxi(Joueur joueurAlea, Equipe equipe, Integer ecartMaxi) {
+        Integer scoreA = getInitialScoreEquipeA();
+        Integer scoreB = getInitialScoreEquipeB();
+        if (equipe == Equipe.EQUIPE_A){
+            scoreA += joueurAlea.getPointsHandicap();
+        }else{
+            scoreB += joueurAlea.getPointsHandicap();
+        }
+        if (scoreA >= scoreB){
+            return (scoreA - scoreB) > ecartMaxi;
+        }else{
+            return (scoreB - scoreA) > ecartMaxi;
+        }
     }
 
     public ArrayList<Joueur> getEquipeA() {

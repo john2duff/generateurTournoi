@@ -4,14 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Joueur implements Serializable, Comparable<Joueur> {
-
-    @Override
-    public int compareTo(Joueur o) {
-        int prenom = o.getPrenom().compareTo(getPrenom());
-        int points = (o.getPoints() < getPoints()) ? -1 : ((o.getPoints() == getPoints()) ? 0 : 1 );
-        return prenom + points;
-    }
+public class Joueur implements Serializable{
 
     public enum Sexe {HOMME, FEMME;};
 

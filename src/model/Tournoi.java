@@ -560,8 +560,7 @@ public class Tournoi implements Serializable {
             case "Equipe mixte":
                 return match.equipeMixte(joueurAlea);
             case "Ecart maxi":
-                //TODO
-                return false;
+                return match.ecartMaxi(joueurAlea, equipe, ecartMaxi);
             case "Attente joueur":
                 //gérer précedemment
                 return false;
@@ -603,7 +602,13 @@ public class Tournoi implements Serializable {
     }
 
     public void trier(){
-        Collections.sort(listJoueurs);
+        if (!isTournoiEnCours()){
+            ComparatorPrenom c1 = new ComparatorPrenom();
+            Collections.sort(listJoueurs, c1);
+        }else{
+            ComparatorScore c2 = new ComparatorScore();
+            Collections.sort(listJoueurs, c2);
+        }
     }
 
 }
