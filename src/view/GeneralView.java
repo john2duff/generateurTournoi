@@ -89,6 +89,7 @@ public class GeneralView extends BorderPane {
         vueJoueur.refreshJoueurView(ctrl.getListJoueurs());
     }
 
+
     public void refreshConfigView() {
         vueConfig.refreshConfig(ctrl.getCurrentTournoi());
     }

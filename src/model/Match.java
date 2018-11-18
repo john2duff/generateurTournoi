@@ -116,8 +116,8 @@ public class Match implements Serializable {
 
     public Integer getInitialScoreEquipeB() {
         Integer points = 0;
-        for (int i = 0; i < equipeA.size(); i++){
-            points += equipeA.get(i).getPointsHandicap();
+        for (int i = 0; i < equipeB.size(); i++){
+            points += equipeB.get(i).getPointsHandicap();
         }
         return points;
     }

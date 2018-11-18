@@ -462,7 +462,9 @@ public class Controler {
 
     public void scoreChange(Integer numeroTour, Integer numeroMatch, Integer newValue, boolean equipeA) {
         currentTournoi.changeScore(numeroTour, numeroMatch, newValue, equipeA);
+        currentTournoi.trier();
         vueGeneral.refreshTournoiToolbar();
+        vueGeneral.refreshJoueurView();
         saveAutomatique();
     }
 
@@ -510,4 +512,5 @@ public class Controler {
         vueGeneral.refreshTournoiView();
         vueGeneral.afficheTabTour(numTourAfficher);
     }
+
 }

@@ -4,9 +4,7 @@ import com.sun.deploy.security.ValidationState;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
+import java.util.*;
 
 public class Tournoi implements Serializable {
 
@@ -310,24 +308,7 @@ public class Tournoi implements Serializable {
             this.listJoueurs.get(i).setNiveau(listJoueurs.get(i).getNiveau());
             this.listJoueurs.get(i).setSexe(listJoueurs.get(i).getSexe());
         }
-    }
-
-    public boolean contrainteIsVisible(String nomContrainte){
-        for (int i = 0; i < listContraintes.size(); i++){
-            if (listContraintes.get(i).getNom().equals(nomContrainte)){
-                return listContraintes.get(i).isVisible();
-            }
-        }
-        return false;
-    }
-
-    public boolean contrainteIsActif(String nomContrainte){
-        for (int i = 0; i < listContraintes.size(); i++){
-            if (listContraintes.get(i).getNom().equals(nomContrainte)){
-                return listContraintes.get(i).isActif();
-            }
-        }
-        return false;
+        trier();
     }
 
     public void enregistreConfig(Tournoi tournoi) {
@@ -398,12 +379,15 @@ public class Tournoi implements Serializable {
     }
 
     public boolean  ajouteJoueur(Joueur j){
+        boolean retour;
         if (!listJoueurs.contains(j)){
-            listJoueurs.add(j);
-            return true;
+            retour = true;
+        }else{
+            retour = false;
         }
         listJoueurs.add(j);
-        return false;
+        trier();
+        return retour;
     }
 
     public void supprimerJoueur(Joueur j) {
@@ -616,6 +600,10 @@ public class Tournoi implements Serializable {
                     sac.add(listJoueursAttente.get(i));
             }
         }
+    }
+
+    public void trier(){
+        Collections.sort(listJoueurs);
     }
 
 }
