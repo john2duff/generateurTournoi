@@ -403,4 +403,13 @@ public class ConfigView extends BorderPane {
         return tournoi;
     }
 
+    public boolean isModeEdition(){
+        return configToolBar.getModeEdition();
+    }
+
+    public void exitModeEdition(){
+        configToolBar.setModeEdition(false);
+    }
+
+
 }

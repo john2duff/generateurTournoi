@@ -69,7 +69,12 @@ public class TournoiToolBar extends ToolBar {
                 }else {
                     clotureTour.setText("Clôturer le tour " + (currentTour+1));
                 }
-                if (tour.isCloturable()) clotureTour.setDisable(false); else clotureTour.setDisable(true);
+                if (tour.isCloturable()){
+                    clotureTour.setDisable(false);
+                } else{
+                    clotureTour.setDisable(true);
+                    clotureTour.setText("Tour "+ (currentTour+1) + " en cours");
+                }
             }
             checkShowContrainte.setVisible(true);
             checkShowContrainte.setSelected(ctrl.getCurrentTournoi().isShowContrainte());

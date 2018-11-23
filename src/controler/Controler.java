@@ -411,6 +411,13 @@ public class Controler {
 
     public void genererTournoi() {
         currentTournoi.setCurrentTour(null);
+        //ne doit pas être utiliser
+        if (vueGeneral.getVueJoueur().isModeEdition()){
+            vueGeneral.getVueJoueur().exitModeEdition();
+        }
+        if (vueGeneral.getVueConfig().isModeEdition()) {
+            vueGeneral.getVueConfig().exitModeEdition();
+        }
         if (currentTournoi.generer()){
             updateInfo("Tournoi généré");
             vueGeneral.refreshTournoi();
@@ -467,9 +474,17 @@ public class Controler {
     }
 
     public void arreterTournoi() {
-        currentTournoi.setTournoiEnCours(false);
-        vueGeneral.refreshTournoi();
-        saveAutomatique();
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Fin au tournoi");
+        dialog.setHeaderText("Vous allez mettre fin au tournoi, tous les matchs vont être supprimés.");
+        dialog.setContentText("Tapez 'ok' si vous voulez continuer :");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.get().equals("ok")){
+            currentTournoi.setTournoiEnCours(false);
+            vueGeneral.refreshTournoi();
+            saveAutomatique();
+        }
     }
 
     public boolean tournoiEnCours() {

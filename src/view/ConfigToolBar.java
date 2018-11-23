@@ -55,12 +55,21 @@ public class ConfigToolBar extends ToolBar {
 
     public void refresh(){
         if (!ctrl.tournoiEnCours()){
-            modeEdition.setDisable(false);
-            genererTournoi.setDisable(!ctrl.getNbreJoueurSuffisant());
             arreterTournoi.setVisible(false);
-            if(modeEdition.isSelected() || ctrl.isJoueurModeEdition()){
+            if (ctrl.getNbreJoueurSuffisant()){
+                if(modeEdition.isSelected() || ctrl.isJoueurModeEdition()){
+                    genererTournoi.setDisable(true);
+                    genererTournoi.setText("Générer tournoi -> Modifications en cours...");
+                }else{
+                    genererTournoi.setDisable(false);
+                    genererTournoi.setText("Générer tournoi");
+                }
+            }else{
                 genererTournoi.setDisable(true);
+                genererTournoi.setText("Générer tournoi -> Nombre de joueurs insuffisant !");
             }
+
+            modeEdition.setDisable(false);
             if (modeEdition.isSelected()){
                 modeEdition.setText("Valider les modifications");
             }else{
@@ -77,4 +86,7 @@ public class ConfigToolBar extends ToolBar {
         return modeEdition.isSelected();
     }
 
+    public void setModeEdition(boolean b) {
+        modeEdition.setSelected(false);
+    }
 }

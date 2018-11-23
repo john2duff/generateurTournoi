@@ -129,4 +129,8 @@ public class GeneralView extends BorderPane {
     public void afficheTabTour(Integer numTourAfficher) {
         vueTournoi.afficheTabTour(numTourAfficher);
     }
+
+    public ConfigView getVueConfig() {
+        return vueConfig;
+    }
 }

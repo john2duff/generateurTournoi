@@ -91,4 +91,8 @@ public class JoueurToolbar extends ToolBar {
     public boolean isModeEdition(){
         return modeEdition.isSelected();
     }
+
+    public void setModeEdition(boolean b) {
+        modeEdition.setSelected(false);
+    }
 }

@@ -74,4 +74,7 @@ public class JoueurView extends BorderPane {
         return joueurToolbar.isModeEdition();
     }
 
+    public void exitModeEdition(){
+        joueurToolbar.setModeEdition(false);
+    }
 }
