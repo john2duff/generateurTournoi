@@ -24,6 +24,7 @@ public class JoueurCellFactory extends HBox {
     private final Label nom = new Label();
     private final Label niveau = new Label();
     private final Label points = new Label();
+    private final Label pointsEcart = new Label();
     private final Label classement = new Label();
 
     private final TextField nomEdition = new TextField();
@@ -64,11 +65,14 @@ public class JoueurCellFactory extends HBox {
             nomPrenom.setAlignment(Pos.CENTER);
             niveau.setText(j.getNiveau().getNomNiveau());
             points.setText(j.getPoints().toString());
+            pointsEcart.setText(j.getPointsEcart().toString());
             if (!ctrl.tournoiEnCours()){
+                setPrefWidth(300d);
                 getChildren().addAll(actif, photo, nomPrenom, niveau);
             }else{
+                setPrefWidth(400d);
                 classement.setText(String.valueOf(index+1));
-                getChildren().addAll(classement, photo, nomPrenom, niveau, points);
+                getChildren().addAll(classement, photo, nomPrenom, niveau, points, pointsEcart);
             }
             setId(index.toString());
             setOnMouseClicked(new EventHandler<MouseEvent>() {

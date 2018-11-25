@@ -206,7 +206,7 @@ public class ConfigView extends BorderPane {
             hboxNiveau.setSpacing(15);
             Label lNomNiveau = new Label(Niveau.getNiveaux().get(i).getNomNiveau());
             if (!configToolBar.getModeEdition()){
-                hboxNiveau.setPrefWidth(100d);
+                hboxNiveau.setPrefWidth(120d);
                 Label avantage = new Label(Niveau.getNiveaux().get(i).getPointsToString());
                 avantage.setAlignment(Pos.CENTER);
                 avantage.setStyle("-fx-font-weight: bold; -fx-min-width: 50;");

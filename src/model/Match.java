@@ -242,7 +242,6 @@ public class Match implements Serializable {
         }else{
             retour = false;
         }
-
         return retour;
     }
 
@@ -255,9 +254,11 @@ public class Match implements Serializable {
             scoreB += joueurAlea.getPointsHandicap();
         }
         if (scoreA >= scoreB){
-            return (scoreA - scoreB) > ecartMaxi;
+            this.ecartMaxi = (scoreA - scoreB) > ecartMaxi;
+            return this.ecartMaxi;
         }else{
-            return (scoreB - scoreA) > ecartMaxi;
+            this.ecartMaxi = (scoreB - scoreA) > ecartMaxi;
+            return this.ecartMaxi;
         }
     }
 

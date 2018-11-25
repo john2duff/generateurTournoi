@@ -30,6 +30,9 @@ public class Controler {
     private final String dossierRacine = "/Tournois/";
     private boolean tournoiAEnregistrer;
 
+    final Image APPLICATION_ICON = chargeImage("/img/main.png");
+
+
     public Controler(Stage primaryStage) {
 
         /*Joueur john = new Joueur("John", "Merandat", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME);
@@ -190,6 +193,9 @@ public class Controler {
         dialog.setHeaderText("Vous allez renommer le tournoi");
         dialog.setContentText("Entrez le nouveau nom ici :");
 
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.getIcons().add(APPLICATION_ICON);
+
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){
             if (tournoiExist(getCheminTournois() + "/" + result.get() + ".trn")){
@@ -291,6 +297,7 @@ public class Controler {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
+            currentTournoi.enregistreListJoueur(vueGeneral.getListJoueurs());
             currentTournoi.supprimerJoueur(currentTournoi.getJoueur(ind));
             vueGeneral.refreshJoueurView();
             updateInfo("Joueur supprimé !");
@@ -313,6 +320,7 @@ public class Controler {
     }
 
     public void ajouterJoueur() {
+        currentTournoi.enregistreListJoueur(vueGeneral.getListJoueurs());
         Joueur j = new Joueur("Joueur" + (currentTournoi.getListJoueurs().size() + 1), "", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME, true);
         if (currentTournoi.ajouteJoueur(j)){
             updateInfo("Vous pouvez renommer le joueur ajouté...");
@@ -475,15 +483,22 @@ public class Controler {
 
     public void arreterTournoi() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Fin au tournoi");
+        dialog.setTitle("Fin du tournoi");
         dialog.setHeaderText("Vous allez mettre fin au tournoi, tous les matchs vont être supprimés.");
         dialog.setContentText("Tapez 'ok' si vous voulez continuer :");
 
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.getIcons().add(APPLICATION_ICON);
+
         Optional<String> result = dialog.showAndWait();
-        if (result.get().equals("ok")){
-            currentTournoi.setTournoiEnCours(false);
-            vueGeneral.refreshTournoi();
-            saveAutomatique();
+        try{
+            if (result.get().equals("ok")){
+                currentTournoi.setTournoiEnCours(false);
+                vueGeneral.refreshTournoi();
+                saveAutomatique();
+            }
+        }catch (Exception e){
+
         }
     }
 

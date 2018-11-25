@@ -53,7 +53,9 @@ public class Tournoi implements Serializable {
         initScoreJoueurs();
         for (int i = 0; i < listTours.size(); i++){
             for (int j = 0; j < listTours.get(i).getListMatchs().size(); j++){
-                distribuePoints(listTours.get(i).getListMatchs().get(j));
+                if (listTours.get(i).getListMatchs().get(j).estFini()){
+                    distribuePoints(listTours.get(i).getListMatchs().get(j));
+                }
             }
         }
     }
@@ -65,8 +67,10 @@ public class Tournoi implements Serializable {
                 match.getEquipeA().get(i).ajoutePoints(this.pointVictoire);
             }else if (match.defaitePlus(Match.Equipe.EQUIPE_A)){
                 match.getEquipeA().get(i).ajoutePoints(this.pointDefaitePlus);
+                match.getEquipeA().get(i).ajoutePointsEcart(match.getScoreEquipeB()-match.getScoreEquipeA());
             }else if (match.defaite(Match.Equipe.EQUIPE_A)){
                 match.getEquipeA().get(i).ajoutePoints(this.pointDefaite);
+                match.getEquipeA().get(i).ajoutePointsEcart(match.getScoreEquipeB()-match.getScoreEquipeA());
             }
         }
         //equipe B
@@ -75,8 +79,10 @@ public class Tournoi implements Serializable {
                 match.getEquipeB().get(i).ajoutePoints(this.pointVictoire);
             }else if (match.defaitePlus(Match.Equipe.EQUIPE_B)){
                 match.getEquipeB().get(i).ajoutePoints(this.pointDefaitePlus);
+                match.getEquipeB().get(i).ajoutePointsEcart(match.getScoreEquipeA()-match.getScoreEquipeB());
             }else if (match.defaite(Match.Equipe.EQUIPE_B)){
                 match.getEquipeB().get(i).ajoutePoints(this.pointDefaite);
+                match.getEquipeB().get(i).ajoutePointsEcart(match.getScoreEquipeA()-match.getScoreEquipeB());
             }
         }
     }
@@ -84,6 +90,7 @@ public class Tournoi implements Serializable {
     private void initScoreJoueurs() {
         for (int i = 0; i < listJoueurs.size(); i++){
             listJoueurs.get(i).setPoints(0);
+            listJoueurs.get(i).setPointsEcart(0);
         }
     }
 

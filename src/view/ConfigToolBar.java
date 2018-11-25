@@ -77,6 +77,7 @@ public class ConfigToolBar extends ToolBar {
             }
         }else{
             modeEdition.setDisable(true);
+            genererTournoi.setText("Générer tournoi -> Tournoi en cours...");
             genererTournoi.setDisable(true);
             arreterTournoi.setVisible(true);
         }
