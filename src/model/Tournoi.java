@@ -336,7 +336,7 @@ public class Tournoi implements Serializable {
 
     }
 
-    private ArrayList<Niveau> getListNiveau() {
+    public ArrayList<Niveau> getListNiveau() {
         return this.listNiveaux;
     }
 

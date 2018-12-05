@@ -375,7 +375,8 @@ public class ConfigView extends BorderPane {
         for (int i = 0; i < vboxAvantage.getChildren().size(); i++){
             HBox h = (HBox)vboxAvantage.getChildren().get(i);
             Integer points = (Integer)((Spinner)h.getChildren().get(1)).getValue();
-            listNiveau.add(new Niveau("", "", points));
+            String nomNiveau = (String)((Label)h.getChildren().get(0)).getText();
+            listNiveau.add(new Niveau(nomNiveau, "", points));
         }
         tournoi.setListNiveau(listNiveau);
 

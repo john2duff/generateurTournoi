@@ -35,17 +35,6 @@ public class Controler {
 
     public Controler(Stage primaryStage) {
 
-        /*Joueur john = new Joueur("John", "Merandat", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME);
-        Joueur olivier = new Joueur("Olivier", "Marlot", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME);
-        Joueur stephane = new Joueur("Stéphane", "Bertin", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME);
-        Joueur audrey = new Joueur("Audrey", "Vuillemin", Niveau.getNiveau("P12"), Joueur.Sexe.FEMME);
-
-        currentTournoi = new Tournoi("Test", Tournoi.TypeTournoi.SIMPLE, 5, 5);
-        currentTournoi.ajouteJoueur(john);
-        currentTournoi.ajouteJoueur(olivier);
-        currentTournoi.ajouteJoueur(stephane);
-        currentTournoi.ajouteJoueur(audrey);*/
-
         this.primaryStage = primaryStage;
 
         vueGeneral = new GeneralView(this);
@@ -173,6 +162,11 @@ public class Controler {
             in.close();
             fileIn.close();
             updateInfo("Tournoi ouvert");
+            //mettre à jour les handicaps
+            for (int i = 0; i < Niveau.getNiveaux().size(); i++) {
+                Niveau.getNiveaux().get(i).setPoints(currentTournoi.getListNiveau().get(i).getPoints());
+            }
+
             vueGeneral.ouvreTournoi();
             primaryStage.setTitle(currentTournoi.getNomTournoi());
         }catch (Exception e){
@@ -321,7 +315,7 @@ public class Controler {
 
     public void ajouterJoueur() {
         currentTournoi.enregistreListJoueur(vueGeneral.getListJoueurs());
-        Joueur j = new Joueur("Joueur" + (currentTournoi.getListJoueurs().size() + 1), "", Niveau.getNiveau("P12"), Joueur.Sexe.HOMME, true);
+        Joueur j = new Joueur("Joueur" + (currentTournoi.getListJoueurs().size() + 1), "", Niveau.getNiveau("NC"), Joueur.Sexe.HOMME, true);
         if (currentTournoi.ajouteJoueur(j)){
             updateInfo("Vous pouvez renommer le joueur ajouté...");
         }else{

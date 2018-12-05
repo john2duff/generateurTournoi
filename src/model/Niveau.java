@@ -44,6 +44,7 @@ public class Niveau implements Serializable {
 
     public static ArrayList<Niveau> loadNiveau(){
         niveaux = new ArrayList<>();
+        niveaux.add(new Niveau("NC", "Non classé", 0));
         niveaux.add(new Niveau("P12", "Promotion", 0));
         niveaux.add(new Niveau("P11", "Promotion", -2));
         niveaux.add(new Niveau("P10", "Promotion", -4));
